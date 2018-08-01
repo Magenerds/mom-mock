@@ -1,0 +1,105 @@
+{% extends "index.twig" %}
+
+{% block content %}
+    <h2>Order #{{ order.increment_id }}</h2>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Orders</a></li>
+            <li class="breadcrumb-item active" aria-current="page">#{{ order.increment_id }}</li>
+        </ol>
+    </nav>
+
+    <div class="container">
+        <div class="row pt-1 pb-3">
+            <div class="col-md-6">
+                <div class="card">
+                    <h5 class="card-header">General Information</h5>
+                    <div class="card-body">
+                        <span class="font-weight-bold">Increment Id: </span>{{ order.increment_id }}<br>
+                        <span class="font-weight-bold">Customer: </span>{{ order.first_name }} {{ order.last_name }}<br>
+                        <span class="font-weight-bold">Email: </span>{{ order.email }}<br>
+                        <span class="font-weight-bold">Store: </span>{{ order.store }}<br>
+                        <span class="font-weight-bold">Status: </span>
+                            {% if order.status == 'new' or order.status == 'complete' %}
+                                <span class="badge badge-success">
+                            {% endif %}
+                            {% if order.status == 'cancelled' %}
+                                <span class="badge badge-danger">
+                            {% endif %}
+                            {{ order.status }}</span><br>
+                        <span class="font-weight-bold">Status reason: </span>{{ order.status_reason }}<br>
+                        <span class="font-weight-bold">Origin date: </span>{{ order.origin_date }}<br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <button type="button" class="btn btn-warning">Shipment</button>
+                <button type="button" class="btn btn-danger">Cancel</button>
+            </div>
+        </div>
+
+        <h5>Items</h5>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Product type</th>
+                        <th scope="col">Sku</th>
+                        <th scope="col">Product name</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td>
+                                {% if item.id != 'SHIPPING' and item.status == 'new' %}
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="check_{{ item.id }}">
+                                </div>
+                                {% endif %}
+                            </td>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.product_type }}</td>
+                            <td>{{ item.sku }}</td>
+                            <td>{{ item.product_name }}</td>
+                            <td>
+                                {% if item.id != 'SHIPPING' %}
+                                    {% if item.status == 'new' %}
+                                        <span class="badge badge-success">
+                                    {% endif %}
+                                    {% if item.status == 'cancelled' %}
+                                        <span class="badge badge-danger">
+                                    {% endif %}
+                                    {% if item.status == 'shipped' %}
+                                        <span class="badge badge-warning">
+                                    {% endif %}
+                                    {{ item.status }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <h5>Shipments</h5>
+        <hr>
+
+        <h5>Post Sales</h5>
+        <hr>
+
+        <h5>Refunds</h5>
+        <hr>
+
+        <h5>Message Log</h5>
+        <hr>
+    </div>
+{% endblock %}

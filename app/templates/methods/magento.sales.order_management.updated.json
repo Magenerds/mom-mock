@@ -1,0 +1,126 @@
+{
+  "order": {
+    "addresses": [
+      {
+        "address1": "{{order.address1}}",
+        "city": "{{order.city}}",
+        "country_code": "{{order.country_code}}",
+        "custom_attributes": [],
+        "email": "{{order.email}}",
+        "first_name": "{{order.first_name}}",
+        "last_name": "{{order.last_name}}",
+        "reference": "",
+        "zip": "{{order.zip}}"
+      },
+      {
+        "address1": "{{order.address1}}",
+        "city": "{{order.city}}",
+        "country_code": "{{order.country_code}}",
+        "custom_attributes": [],
+        "email": "{{order.email}}",
+        "first_name": "{{order.first_name}}",
+        "last_name": "{{order.last_name}}",
+        "reference": "",
+        "zip": "{{order.zip}}"
+      }
+    ],
+    "custom_attributes": [],
+    "customer": {
+      "id": "anonymous",
+      "segment": "B2C",
+      "type": "GUEST"
+    },
+    "customer_service_agent": "0",
+    "id": "{{order.increment_id}}",
+    "ip": "xx.xx.xx.xx",
+    "language": "de_DE",
+    "lines": [
+      {
+        "amount": {
+          "gross_amount": "{{order_item.gross_amount}}",
+          "net_amount": "{{order_item.net_amount}}",
+          "tax_amount": "{{order_item.taxes_amount}}",
+          "tax_rate": "{{order_item.taxes_rate}}",
+          "taxes": [
+            {
+              "amount": "{{order_item.taxes_amount}}",
+              "rate": "{{order_item.taxes_rate}}",
+              "type": ""
+            }
+          ]
+        },
+        "custom_attributes": [
+          {
+            "name": "imageUrl",
+            "value": ""
+          }
+        ],
+        "id": "{{order_item.id}}",
+        "line_number": "{{order_item.line_number}}",
+        "payments": [
+          {
+            "currency": "EUR",
+            "gross_amount": "{{order_item.gross_amount}}",
+            "net_amount": "{{order_item.net_amount}}",
+            "payment_reference": "",
+            "status": "CAPTURE_REQUESTED",
+            "status_date": "{{order.origin_date}}",
+            "tax_amount": "{{order_item.taxes_amount}}",
+            "tax_rate": "{{order_item.taxes_rate}}",
+            "taxes": [
+              {
+                "amount": "{{order_item.taxes_amount}}",
+                "rate": "{{order_item.taxes_rate}}",
+                "type": ""
+              }
+            ]
+          }
+        ],
+        "product_name": "{{order_item.product_name}}",
+        "product_type": "PHYSICAL",
+        "promotions_info": {
+          "original_price": "{{order_item.gross_amount}}",
+          "promotions": []
+        },
+        "shipping_address_reference": "",
+        "sku": "{{order_item.sku}}",
+        "source_id": "",
+        "source_location": "",
+        "status": "{{order_item.status}}",
+        "status_date": "{{order.origin_date}}",
+        "status_reason": "{{order_item.status}}"
+      }
+    ],
+    "origin": "FRONTEND",
+    "origin_date": "{{order.origin_date}}",
+    "payments": [
+      {
+        "currency": "EUR",
+        "reference": "",
+        "transactions": [
+          {
+            "amount": "{{order.total_amount}}",
+            "billing_address_reference": "",
+            "gateway_information": {
+              "custom_attributes": [
+                {
+                  "name": "mdc_gateway_processor",
+                  "value": ""
+                }
+              ],
+              "gateway_id": "OFFLINE",
+              "transaction_id": ""
+            },
+            "payment_method": "ZEROPAY",
+            "payment_submethod": "ZEROPAY"
+          }
+        ]
+      }
+    ],
+    "status": "COMPLETE",
+    "status_date": "{{order.origin_date}}",
+    "status_reason": "FULLYSHIPPED",
+    "store": "{{order.store}}",
+    "vat_country": "DE"
+  }
+}

@@ -1,0 +1,42 @@
+{% extends "index.twig" %}
+
+{% block content %}
+    <h2>Orders</h2>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Orders</li>
+        </ol>
+    </nav>
+
+    <div class="container">
+        <div class="row pt-3 pb-3">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Increment Id</th>
+                        <th scope="col">Store</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Status Reason</th>
+                        <th scope="col">Origin Date</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.increment_id }}</td>
+                            <td>{{ order.store }}</td>
+                            <td>{{ order.status }}</td>
+                            <td>{{ order.status_reason }}</td>
+                            <td>{{ order.origin_date }}</td>
+                            <td><a href="/order/{{ order.id }}">Edit</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

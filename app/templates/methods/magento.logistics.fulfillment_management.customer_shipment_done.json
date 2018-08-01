@@ -1,0 +1,78 @@
+{
+  "shipment": {
+    "address": {
+      "address1": "{{order.address1}}",
+      "address_type": "{{order.address_type}}",
+      "city": "{{order.city}}",
+      "country_code": "{{order.country_code}}",
+      "custom_attributes": [],
+      "email": "{{order.email}}",
+      "first_name": "{{order.first_name}}",
+      "last_name": "{{order.last_name}}",
+      "latitude": "",
+      "longitude": "",
+      "reference": "",
+      "zip": "{{order.zip}}"
+    },
+    "items": [
+      {
+        "custom_details": [
+          {
+            "name": "imageUrl",
+            "value": ""
+          }
+        ],
+        "image_url": "",
+        "item_type": "",
+        "name": "{{order_item.product_name}}",
+        "order_line_id": "{{order_item.id}}",
+        "order_line_number": "{{order_item.line_number}}",
+        "order_line_price": {
+          "net_amount": "{{order_item.net_amount}}",
+          "gross_amount": "{{order_item.gross_amount}}",
+          "tax_amount": "{{order_item.taxes_amount}}",
+          "tax_rate": "{{order_item.taxes_rate}}",
+          "taxes": [
+            {
+              "type": "NO TAX",
+              "amount": "{{order_item.taxes_amount}}",
+              "rate": "{{order_item.taxes_rate}}"
+            }
+          ],
+          "currency": "EUR"
+        },
+        "sku": "{{order_item.sku}}",
+        "status": "SHIPPED",
+        "status_reason": "OSREPORT"
+      }
+    ],
+    "method": "STANDARD",
+    "order_id": "{{order.increment_id}}",
+    "packages": [
+      {
+        "aggregated_items": [
+          {
+            "aggregated_line_id": "{{order_item.id}}",
+            "order_lines": [
+              "{{order_item.id}}"
+            ],
+            "quantity": 1,
+            "sku": "{{order_item.sku}}"
+          }
+        ],
+        "carrier": "DHL ",
+        "details": [],
+        "id": "",
+        "items": [
+          "{{order_item.line_number}}"
+        ],
+        "tracking_comment": "MOM Mock",
+        "tracking_link": "http://mom.mock",
+        "tracking_number": "1234567890"
+      }
+    ],
+    "shipment_id": "",
+    "source_id": "XXX",
+    "store_id": "{{order.store}}"
+  }
+}

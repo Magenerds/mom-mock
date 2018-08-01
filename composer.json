@@ -1,0 +1,36 @@
+{
+    "name": "magenerds/mom-mock",
+    "description": "Magento Order Management Mock",
+    "type": "project",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Florian Sydekum",
+            "email": "f.sydekum@techdivision.com"
+        },
+        {
+            "name": "Harald Deiser",
+            "email": "h.deiser@techdivision.com"
+        }
+    ],
+    "license": [
+        "OSL-3.0"
+    ],
+    "require": {
+        "slim/slim": "^3.0",
+        "doctrine/dbal": "~2.5.0",
+        "twig/twig": "^2.4",
+        "twbs/bootstrap": "^4.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "MomMock\\": "app/MomMock"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "cp vendor/twbs/bootstrap/dist/css/bootstrap.min.css pub/web/css/",
+            "cp vendor/twbs/bootstrap/dist/js/bootstrap.min.js pub/web/js/"
+        ]
+    }
+}
