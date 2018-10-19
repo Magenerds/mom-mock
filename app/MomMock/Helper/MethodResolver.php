@@ -31,7 +31,8 @@ class MethodResolver
      */
     const VALID_INCOMING_METHODS = [
         'magento.service_bus.remote.register',
-        'magento.sales.order_management.create'
+        'magento.sales.order_management.create',
+        'magento.catalog.product_management.updated'
     ];
 
     /**
@@ -39,6 +40,7 @@ class MethodResolver
      *
      * @param string $method
      * @return AbstractIncomingMethod
+     * @throws \Exception
      */
     public function getServiceClassForMethod(string $method)
     {

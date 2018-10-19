@@ -13,6 +13,7 @@
 use Doctrine\DBAL\DriverManager;
 use MomMock\Controller\Backend\OrderController;
 use MomMock\Controller\Backend\ShipmentController;
+use MomMock\Controller\EventsController;
 use MomMock\Controller\TokenController;
 use MomMock\Controller\MomController;
 use MomMock\Helper\MethodResolver;
@@ -56,6 +57,7 @@ $app->get('/order/{id}', OrderController::class . ':detailAction');
 $app->get('/shipment/create', ShipmentController::class . ':createShipmentAction');
 $app->post('/', MomController::class . ':indexAction');
 $app->post('/delegate/oms', MomController::class . ':indexAction');
+$app->post('/events', EventsController::class . ':indexAction');
 $app->post('/oauth/token', TokenController::class . ':indexAction');
 
 $app->run();
