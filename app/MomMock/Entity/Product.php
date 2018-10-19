@@ -13,7 +13,6 @@
 namespace MomMock\Entity;
 
 use DateTime;
-use MomMock\Entity\Product\Attribute;
 
 /**
  * Class Product
@@ -298,7 +297,7 @@ class Product extends AbstractEntity
         $this->createdAt = new DateTime($productData['created_at']);
         $this->updatedAt = new DateTime($productData['updated_at']);
 
-        // Skip child and Attribute if id not set
+        // Skip child if id not set
         if (empty($this->id)) {
             return $this;
         }
@@ -327,56 +326,6 @@ class Product extends AbstractEntity
         //</editor-fold>
 
         return $this;
-    }
-
-    /**
-     * Import product
-     *
-     * @param $productData
-     */
-    public function importProduct($productData)
-    {
-        // Try to load product by SKU
-        $this->loadBySku($productData['sku']);
-
-        // Set product data
-        $this->setType($productData['type']);
-        $this->setSku($productData['sku']);
-        $this->setName($productData['name'][0]['value']);
-        $this->setEnabled($productData['enabled']);
-
-        //<editor-fold desc="Clear child relation data">
-        $this->setChildren([]);
-
-        if ($this->id) {
-            // Delete child relation
-            $this->db->createQueryBuilder()
-                ->delete(sprintf("`%s`", self::TABLE_CHILD_NAME))
-                ->where('`product_id` = :id')
-                ->setParameter(':id', $this->id)
-                ->execute();
-        }
-        //</editor-fold>
-
-        // Save product attributes
-        $this->attributes = [];
-        foreach ($productData['custom_attributes'] as $attributeData) {
-            $this->attributes[$attributeData['attribute_code']] = $attributeData['value'];
-        }
-
-        // Save product
-        $this->save();
-
-        // Save product children relation
-        foreach ($productData['children_skus'] as $child_sku) {
-            $this->db->createQueryBuilder()
-                ->insert(sprintf("`%s`", self::TABLE_CHILD_NAME))
-                ->setValue('product_id', ':product_id')
-                ->setValue('child_sku', ':child_sku')
-                ->setParameter(':product_id', $this->id)
-                ->setParameter(':child_sku', $child_sku)
-                ->execute();
-        }
     }
 
     /**
