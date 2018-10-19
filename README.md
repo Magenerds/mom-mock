@@ -51,5 +51,6 @@ OAuth token.
 | magento.sales.order_management.updated | mdc | Update Order Status in MDC | ✓ |
 | magento.logistics.carrier_management.request_shipping_details | mdc | Request Shipping label from MDC  | X |
 | magento.postsales.return_management.authorize | oms | Request a RMA | X |
+| magento.catalog.product_management.updated | oms | Export Product to OMS | ✓ |
 | magento.postsales.return_management.updated | mdc | Update RMA status | X |
 | magento.postsales.refund_management.updated | mdc | Creates a creditmemo | X |
