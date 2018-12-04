@@ -34,4 +34,11 @@ abstract class AbstractEntity
     {
         $this->db = $db;
     }
+
+    /**
+     * Saves an order
+     *
+     * @return string
+     */
+    abstract public function save();
 }

@@ -12,6 +12,10 @@
 
 namespace MomMock\Controller\Backend;
 
+use MomMock\Entity\Order\Item;
+use MomMock\Entity\Rma;
+use MomMock\Entity\Order;
+use MomMock\Entity\Rma\Item as RmaItem;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -28,6 +32,9 @@ class OrderController extends AbstractBackendController
      * @param Request $request
      * @param Response $response
      * @return Response
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function listAction(Request $request, Response $response)
     {
@@ -35,7 +42,7 @@ class OrderController extends AbstractBackendController
 
         $orders = $db->createQueryBuilder()
             ->select('*')
-            ->from('`order`')
+            ->from('`' . Order::TABLE_NAME . '`')
             ->execute()
             ->fetchAll();
 
@@ -56,19 +63,59 @@ class OrderController extends AbstractBackendController
      * @param Response $response
      * @param $params
      * @return Response
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function detailAction(Request $request, Response $response, $params)
     {
-        $db = $this->getDb();
-
         $id = 0;
         if (isset($params['id'])) {
             $id = $params['id'];
         }
 
-        $order = $db->createQueryBuilder()
+        $templ = $this->getTemplateEngine();
+
+        $response->write($templ->render(
+            'order/detail.twig',
+            [
+                'order' => $this->getOrderDetails($id),
+                'returns' => $this->getReturnDetails($this->getIncrementIdById($id))
+            ]
+        ));
+
+        return $response;
+    }
+
+    /**
+     * Get increment id by entity id.
+     *
+     * @param $id
+     * @return bool|string
+     */
+    private function getIncrementIdById($id)
+    {
+        return $this->getDb()->createQueryBuilder()
+            ->select('increment_id')
+            ->from('`' . Order::TABLE_NAME . '`')
+            ->where('`id` = ?')
+            ->setParameter(0, $id)
+            ->execute()
+            ->fetchColumn();
+    }
+
+    /**
+     * Get order details by id.
+     *
+     * @param $id
+     * @return array
+     */
+    private function getOrderDetails($id)
+    {
+        $db = $this->getDb();
+        $general = $db->createQueryBuilder()
             ->select('*')
-            ->from('`order`')
+            ->from('`' . Order::TABLE_NAME . '`')
             ->where('`id` = ?')
             ->setParameter(0, $id)
             ->execute()
@@ -76,22 +123,45 @@ class OrderController extends AbstractBackendController
 
         $items = $db->createQueryBuilder()
             ->select('*')
-            ->from('`order_item`')
+            ->from('`' . Item::TABLE_NAME . '`')
             ->where('`order_id` = ?')
             ->setParameter(0, $id)
             ->execute()
             ->fetchAll();
 
-        $templ = $this->getTemplateEngine();
+        return ['general' => $general, 'items' => $items];
+    }
 
-        $response->write($templ->render(
-            'order/detail.twig',
-            [
-                'order' => $order,
-                'items' => $items
-            ]
-        ));
+    /**
+     * @param $id
+     * @return array
+     */
+    private function getReturnDetails($orderId)
+    {
+        $db = $this->getDb();
+        $result = [];
+        $general = $db->createQueryBuilder()
+            ->select('*')
+            ->from('`' . Rma::TABLE_NAME . '`')
+            ->where('`order_id` = ?')
+            ->setParameter(0, $orderId)
+            ->execute()
+            ->fetchAll();
 
-        return $response;
+        foreach($general as $return) {
+            $id = $return['id'];
+
+            $items = $db->createQueryBuilder()
+                ->select('*')
+                ->from('`' . RmaItem::TABLE_NAME . '`')
+                ->where('`return_id` = ?')
+                ->setParameter(0, $id)
+                ->execute()
+                ->fetchAll();
+
+            $result[] = ['general' => $return, 'items' => $items];
+        }
+
+        return $result;
     }
 }

@@ -17,6 +17,7 @@
         "OSL-3.0"
     ],
     "require": {
+        "ext-json": "*",
         "slim/slim": "^3.0",
         "doctrine/dbal": "~2.5.0",
         "twig/twig": "^2.4",

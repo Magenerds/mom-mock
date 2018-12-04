@@ -1,0 +1,76 @@
+<div class="container">
+    <div class="row pt-2 pb-3">
+        <div class="col-md-4">
+            <div class="card">
+                <h5 class="card-header">Return {{ return.general.rma_id }}</h5>
+                <div class="card-body">
+                    <span class="font-weight-bold">Return Id: </span>{{ return.general.rma_id }}<br>
+                    <span class="font-weight-bold">Source: </span>{{ return.general.source }}<br>
+                    <span class="font-weight-bold">Credit Note: </span>{{ return.general.credit_note }}<br>
+                    <span class="font-weight-bold">Status: </span>
+                    {% if return.general.status == 'requested' %}
+                    <span class="badge badge-warning">
+                                        {% endif %}
+                        {% if return.general.status == 'cancelled' %}
+                        <span class="badge badge-danger">
+                                        {% endif %}
+                            {% if return.general.status == 'approved' %}
+                            <span class="badge badge-success">
+                                        {% endif %}
+                                {{ return.general.status }}</span><br>
+                                    <span class="font-weight-bold">Tracking number: </span>{{ return.general.tracking_number }}<br>
+                                    <span class="font-weight-bold">Carrier: </span>{{ return.general.carrier }}<br>
+                                    <span class="font-weight-bold">Label: </span><a href="{{ return.general.label }}">View</a><br>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Line Number</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Return reason</th>
+                    <th scope="col">Comment</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in return.items %}
+                    <tr>
+                        <td>{{ item.line_number }}</td>
+                        <td>
+                            Name: {{ item.product_name }} <br />
+                            Sku: {{ item.sku }}
+                        </td>
+                        <td>
+                            {% if item.status == 'approved' %}
+                            <span class="badge badge-success">
+                                            {% endif %}
+                                {% if item.status == 'cancelled' %}
+                                <span class="badge badge-danger">
+                                            {% endif %}
+                                    {% if item.status == 'requested' %}
+                                    <span class="badge badge-warning">
+                                            {% endif %}
+                                        {{ item.status }}</span>
+                        </td>
+                        <td>
+                            {{ item.reason }}
+                        </td>
+                        <td>
+                            {{ item.reason_description }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if return.general.status != 'approved' %}
+            <div class="col-md-6 pt-3" data-rma-id="{{ return.general.id }}">
+                <button type="button" class="btn btn-warning return-approve">Approve return</button>
+                <button type="button" class="btn btn-danger return-cancel">Cancel return</button>
+            </div>
+        {% endif %}
+    </div>
+</div>

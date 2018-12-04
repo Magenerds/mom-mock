@@ -1,0 +1,30 @@
+{
+  "return": {
+    "custom_attributes": [],
+    "lines": [
+      {
+        "custom_attributes": [],
+        "id": "{{rma_item.id}}",
+        "line_number": "{{rma_item.line_number}}",
+        "reason": "{{rma_item.reason}}",
+        "reason_description": "{{rma_item.reason_description}}",
+        "sku": "{{rma_item.sku}}",
+        "status": "REQUESTED"
+      }
+    ],
+    "order_id": "{{rma.order_id}}",
+    "return_tracking_carrier": "{{rma.carrier}}",
+    "return_tracking_label_url": "{{rma.label}}",
+    "return_tracking_number": "{{rma.tracking_number}}",
+    "return_tracking_url": "https:\/\/nolp.dhl.de\/nextt-online-public\/de\/search?piececode={{rma.tracking_number}}",
+    "rma": "RMA-CS-{{rma.order_id}}-1",
+    "sales_channel_id": "{{rma.sales_channel}}",
+    "source_id": "{{rma.source}}",
+    "status": {
+      "code": "REQUESTED",
+      "date": "{{rma.date}}",
+      "name": "REQUESTED",
+      "reason_code": "CSRREQUEST"
+    }
+  }
+}

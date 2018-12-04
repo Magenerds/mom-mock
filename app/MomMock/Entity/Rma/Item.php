@@ -10,7 +10,7 @@
  * info@magenerds.com
  */
 
-namespace MomMock\Entity\Order;
+namespace MomMock\Entity\Rma;
 
 use MomMock\Entity\AbstractEntity;
 
@@ -24,14 +24,19 @@ class Item extends AbstractEntity
     /**
      * Item status
      */
-    const STATUS_NEW = 'new';
-    const STATUS_SHIPPED = 'shipped';
+    const STATUS_PENDING = 'requested';
+    const STATUS_COMPLETE = 'approved';
     const STATUS_CANCELLED = 'cancelled';
 
     /**
      * Holds the table name
      */
-    const TABLE_NAME = 'order_item';
+    const TABLE_NAME = 'rma_item';
+
+    /**
+     * Id field.
+     */
+    const ID_FIELD = 'return_id';
 
     /**
      * @var []
@@ -45,7 +50,7 @@ class Item extends AbstractEntity
     public function setData($orderId, array $data)
     {
         $this->data = $data;
-        $this->data['order_id'] = $orderId;
+        $this->data[self::ID_FIELD] = $orderId;
 
         return $this;
     }
@@ -60,18 +65,19 @@ class Item extends AbstractEntity
         $this->db->createQueryBuilder()
             ->insert(sprintf("`%s`", self::TABLE_NAME))
             ->values([
-                '`order_id`' => "'{$this->data['order_id']}'",
-                '`id`' => "'{$this->data['id']}'",
+                '`' . self::ID_FIELD . '`' => "'{$this->data[self::ID_FIELD]}'",
                 '`line_number`' => "'{$this->data['line_number']}'",
-                '`product_type`' => "'{$this->data['product_type']}'",
                 '`sku`' => "'{$this->data['sku']}'",
                 '`product_name`' => "'{$this->data['product_name']}'",
-                '`image_url`' => "'{$this->data['image_url']}'",
                 '`status`' => "'{$this->data['status']}'",
-                '`net_amount`' => "'{$this->data['amount']['net_amount']}'",
-                '`gross_amount`' => "'{$this->data['amount']['gross_amount']}'",
-                '`taxes_amount`' => "'{$this->data['amount']['taxes'][0]['amount']}'",
-                '`taxes_rate`' => "'{$this->data['amount']['taxes'][0]['rate']}'"
+                '`reason`' => "'{$this->data['reason']}'",
+                '`reason_description`' => "'{$this->data['reason_description']}'",
+                '`base_condition`' => "'{$this->data['condition']}'",
+                '`condition_description`' => "'{$this->data['condition_description']}'",
+                '`net_amount`' => "{$this->data['net_amount']}",
+                '`gross_amount`' => "{$this->data['gross_amount']}",
+                '`taxes_amount`' => "{$this->data['taxes_amount']}",
+                '`taxes_rate`' => "{$this->data['taxes_rate']}"
             ])
             ->execute();
 

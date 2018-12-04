@@ -55,6 +55,10 @@ class MomController
     {
         $data = json_decode($request->getBody(), true);
 
+        if(!$data) {
+            $data = $request->getParsedBody();
+        }
+
         if (!array_key_exists('method', $data)
             || !in_array($data['method'], $this->methodResolver->getValidMethods()))
         {

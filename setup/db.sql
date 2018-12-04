@@ -35,11 +35,52 @@ CREATE TABLE `order_item` (
     ON UPDATE CASCADE
 );
 
+CREATE TABLE `rma` (
+	id INT(6) UNSIGNED AUTO_INCREMENT UNIQUE PRIMARY KEY,
+	order_id VARCHAR(30) NOT NULL,
+	rma_id VARCHAR(30) NOT NULL,
+	source VARCHAR(255) NOT NULL,
+	sales_channel VARCHAR(30) NOT NULL,
+	status VARCHAR(50),
+  tracking_number VARCHAR(30),
+  carrier VARCHAR(50),
+  label VARCHAR(255),
+  credit_note VARCHAR(50)
+);
+
+CREATE TABLE `rma_item` (
+	return_id INT(6) UNSIGNED,
+	id int(6) UNSIGNED AUTO_INCREMENT UNIQUE PRIMARY KEY,
+	line_number INT(6) UNSIGNED,
+	sku VARCHAR(30),
+	product_name VARCHAR(50),
+	status VARCHAR(30),
+	reason VARCHAR(255),
+	reason_description VARCHAR(255),
+	base_condition VARCHAR(100),
+	condition_description VARCHAR(255),
+	net_amount VARCHAR(30),
+	gross_amount VARCHAR(30),
+	taxes_amount VARCHAR(30),
+	taxes_rate VARCHAR(30),
+	FOREIGN KEY (return_id) REFERENCES `rma`(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
 CREATE TABLE `integration` (
 	id VARCHAR(10) UNIQUE PRIMARY KEY,
 	url VARCHAR(60) NOT NULL,
 	secret VARCHAR(60) NOT NULL
 );
+
+CREATE TABLE `flags` (
+  id INT(6) UNSIGNED AUTO_INCREMENT UNIQUE PRIMARY KEY,
+  name VARCHAR(50),
+  value VARCHAR(255)
+)
+
+INSERT INTO `flags` (`name`, `value`) VALUES (''credit_note_counter'', 0);
 
 -- Create syntax for TABLE 'product'
 CREATE TABLE `product` (
