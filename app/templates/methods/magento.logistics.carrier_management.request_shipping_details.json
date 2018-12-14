@@ -1,0 +1,75 @@
+{
+    "shipment": {
+        "store_id": "{{order.store}}",
+        "order_id": "{{order.id}}",
+        "source_id": "",
+        "method": "dhl",
+        "items": [
+            {
+                "order_line_id": "{{order_item.id}}",
+                "order_line_number": "{{order_item.line_number}}",
+                "sku": "{{order_item.sku}}",
+                "name": "{{order_item.product_name}}",
+                "custom_details": [
+                    {
+                        "name": "imageUrl",
+                        "value": "{{order_item.image_url}}"
+                    }
+                ],
+                "image_url": "{{order_item.image_url}}",
+                "item_type": "PHYSICAL",
+                "order_line_price": {
+                    "net_amount": "{{order_item.net_amount}}",
+                    "gross_amount": "{{order_item.gross_amount}}",
+                    "tax_amount": "{{order_item.taxes_amount}}",
+                    "tax_rate": "{{order_item.taxes_rate}}",
+                    "taxes": [
+                        {
+                            "type": "NO TAX",
+                            "amount": "{{order_item.taxes_amount}}",
+                            "rate": "{{order_item.taxes_rate}}"
+                        }
+                    ],
+                    "currency": "EUR"
+                },
+                "status": "ASSIGNED",
+                "status_reason": "ASSIGNED"
+            }
+        ],
+        "address": {
+            "address1": "{{order.address1}}",
+            "address_type": "customer",
+            "city": "{{order.city}}",
+            "country_code": "{{order.country_code}}",
+            "custom_attributes": [],
+            "email": "{{order.email}}",
+            "first_name": "{{order.first_name}}",
+            "last_name": "{{order.last_name}}",
+            "reference": "",
+            "zip": "{{order.zip}}"
+        },
+        "packages": [
+            {
+                "aggregated_items": [
+                    {
+                        "aggregated_line_id": "{{order_item.id}}",
+                        "order_lines": [
+                            "{{order_item.id}}"
+                        ],
+                        "quantity": 1,
+                        "sku": "{{order_item.sku}}"
+                    }
+                ],
+                "carrier": "DHL ",
+                "details": [],
+                "id": "{{order.id}}",
+                "items": [
+                    "{{order_item.line_number}}"
+                ],
+                "tracking_comment": "MOM Mock",
+                "tracking_link": "http://mom.mock",
+                "tracking_number": "1234567890"
+            }
+        ]
+    }
+}
