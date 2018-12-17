@@ -46,11 +46,12 @@ OAuth token.
 | Message | Endpoint | Description | Implemented |
 |----|----|----|----|
 | magento.service_bus.remote.register | oms | Register Remote | ✓ |
-| magento.sales.order_management.create | oms | Create an order in MCOM  | ✓ |
+| magento.sales.order_management.create | oms | Create an order in MOM  | ✓ |
 | magento.logistics.fulfillment_management.customer_shipment_done | mdc | Complete Shipment  | ✓ |
 | magento.sales.order_management.updated | mdc | Update Order Status in MDC | ✓ |
 | magento.logistics.carrier_management.request_shipping_details | mdc | Request Shipping label from MDC  | X |
-| magento.postsales.return_management.authorize | oms | Request a RMA | X |
-| magento.catalog.product_management.updated | oms | Export Product to OMS | ✓ |
-| magento.postsales.return_management.updated | mdc | Update RMA status | X |
-| magento.postsales.refund_management.updated | mdc | Creates a creditmemo | X |
+| magento.postsales.return_management.authorize | oms | Request a RMA | ✓ |
+| magento.catalog.product_management.updated | oms | Export Product to MOM | ✓ |
+| magento.postsales.return_management.updated | mdc | Update RMA status | ✓ |
+| magento.postsales.refund_management.updated | mdc | Creates a creditmemo | ✓ |
+| magento.inventory.aggregate_stock_management.updated | mdc | Stock update from MOM | X |
