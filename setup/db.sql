@@ -37,7 +37,8 @@ CREATE TABLE `order_item` (
 
 CREATE TABLE `rma` (
 	id INT(6) UNSIGNED AUTO_INCREMENT UNIQUE PRIMARY KEY,
-	order_id VARCHAR(30) NOT NULL,
+  order_id INT(6) UNSIGNED,
+  increment_id VARCHAR(30) NOT NULL,
 	rma_id VARCHAR(30) NOT NULL,
 	source VARCHAR(255) NOT NULL,
 	sales_channel VARCHAR(30) NOT NULL,
@@ -45,12 +46,15 @@ CREATE TABLE `rma` (
   tracking_number VARCHAR(30),
   carrier VARCHAR(50),
   label VARCHAR(255),
-  credit_note VARCHAR(50)
+  credit_note VARCHAR(50),
+  FOREIGN KEY (order_id) REFERENCES `order`(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE `rma_item` (
-	return_id INT(6) UNSIGNED,
 	id int(6) UNSIGNED AUTO_INCREMENT UNIQUE PRIMARY KEY,
+	rma_id INT(6) UNSIGNED,
 	line_number INT(6) UNSIGNED,
 	sku VARCHAR(30),
 	product_name VARCHAR(50),
@@ -63,7 +67,7 @@ CREATE TABLE `rma_item` (
 	gross_amount VARCHAR(30),
 	taxes_amount VARCHAR(30),
 	taxes_rate VARCHAR(30),
-	FOREIGN KEY (return_id) REFERENCES `rma`(id)
+	FOREIGN KEY (rma_id) REFERENCES `rma`(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
@@ -80,7 +84,7 @@ CREATE TABLE `flags` (
   value VARCHAR(255)
 )
 
-INSERT INTO `flags` (`name`, `value`) VALUES (''credit_note_counter'', 0);
+INSERT INTO `flags` (`name`, `value`) VALUES ('credit_note_counter', 0);
 
 -- Create syntax for TABLE 'product'
 CREATE TABLE `product` (

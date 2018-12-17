@@ -13,7 +13,8 @@
 namespace MomMock\Entity;
 
 /**
- * Class Order
+ * Class Rma
+ *
  * @package MomMock\Entity
  * @author  Harald Deiser <h.deiser@techdivision.com>
  */
@@ -25,6 +26,8 @@ class Rma extends AbstractEntity
     const STATUS_REQUESTED = 'requested';
     const STATUS_COMPLETE = 'approved';
     const STATUS_CANCELLED = 'cancelled';
+
+    const RMA_PREFIX = 'RMA-CS-';
 
     /**
      * Holds the table name
@@ -53,17 +56,19 @@ class Rma extends AbstractEntity
     }
 
     /**
-     * Saves an order
+     * Saves a rma
      *
      * @return string
      */
     public function save()
     {
+        $rmaId = self::RMA_PREFIX . $this->data['increment_id'] . '-' . $this->getRmaCount($this->data['increment_id']);
         $this->db->createQueryBuilder()
             ->insert(sprintf("`%s`", self::TABLE_NAME))
             ->values([
                 '`order_id`' => "'{$this->data['order_id']}'",
-                '`rma_id`' => "'RMA-CS-{$this->data['order_id']}-{$this->getRmaCount($this->data['order_id'])}'",
+                '`increment_id`' => "'{$this->data['increment_id']}'",
+                '`rma_id`' => "'{$rmaId}'",
                 '`source`' => "'{$this->data['source_id']}'",
                 '`sales_channel`' => "'{$this->data['sales_channel_id']}'",
                 '`status`' => "'{$this->data['status']}'",

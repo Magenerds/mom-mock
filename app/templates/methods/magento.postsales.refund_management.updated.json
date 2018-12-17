@@ -32,7 +32,7 @@
         "reason_description": "{{rma_item.reason_description}}"
       }
     ],
-    "order_id": "{{rma.order_id}}",
+    "order_id": "{{rma.increment_id}}",
     "refund_reason": "RELEASESUCCESS",
     "refund_type": "Return",
     "rma": "{{rma.rma_id}}",

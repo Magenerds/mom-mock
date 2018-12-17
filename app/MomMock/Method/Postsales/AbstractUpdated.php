@@ -17,7 +17,9 @@ use MomMock\Entity\Rma\Item;
 use MomMock\Method\AbstractOutgoingMethod;
 
 /**
- * Class Updated
+ * Class AbstractUpdated
+ *
+ * @package MomMock\Method\Postsales
  * @author  Harald Deiser <h.deiser@techdivision.com>
  */
 abstract class AbstractUpdated extends AbstractOutgoingMethod
@@ -50,7 +52,7 @@ abstract class AbstractUpdated extends AbstractOutgoingMethod
         return $this->db->createQueryBuilder()
             ->select('*')
             ->from('`' . Item::TABLE_NAME . '`')
-            ->where('`' . Item::ID_FIELD . '` = :rmaId')
+            ->where('`' . Item::RMA_ID_FIELD . '` = :rmaId')
             ->setParameter(':rmaId', $rmaId)
             ->execute()
             ->fetchAll();
@@ -61,7 +63,7 @@ abstract class AbstractUpdated extends AbstractOutgoingMethod
      *
      * @param $status
      */
-    protected function setRmaStatus($rmaId)
+    protected function setRmaCompleteStatus($rmaId)
     {
         $queryBuilder = $this->db->createQueryBuilder();
 
@@ -79,7 +81,7 @@ abstract class AbstractUpdated extends AbstractOutgoingMethod
      * @param $id
      * @param $status
      */
-    protected function setRmaItemStatus($rmaItems)
+    protected function setRmaCompleteItemStatus($rmaItems)
     {
         $queryBuilder = $this->db->createQueryBuilder();
         $orComposite = new CompositeExpression(CompositeExpression::TYPE_OR);

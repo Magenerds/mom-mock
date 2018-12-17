@@ -19,12 +19,20 @@ use MomMock\Entity\Rma\Item;
 
 /**
  * Class Authorize
- * @package MomMock\Method\Sales\OrderManagement
+ *
+ * @package MomMock\Method\Postsales\ReturnManagement
  * @author  Harald Deiser <h.deiser@techdivision.com>
  */
 class Authorize extends AbstractIncomingMethod
 {
+    /**
+     * Constant for column name
+     */
     const CREDIT_NOTE_COUNT_COLUMN = 'credit_note_counter';
+
+    /**
+     * Constant for credit note prefix.
+     */
     const CREDIT_NOTE_PREFIX = 'CDE';
 
     /**
@@ -37,7 +45,7 @@ class Authorize extends AbstractIncomingMethod
     public function handleRequestData($data)
     {
         if (!isset($data['params']) || !isset($data['params']['return'])) {
-            throw new \Exception('No order data was given');
+            throw new \Exception('No rma data was given');
         }
 
         $return = $data['params']['return'];
@@ -58,8 +66,12 @@ class Authorize extends AbstractIncomingMethod
     protected function createReturn($returnData)
     {
         $return = new Rma($this->getDb());
+
+        $returnData['increment_id'] = $returnData['order_id'];
+        $returnData['order_id'] = $this->getOrderIdByIncrementId($returnData['order_id']);
         $returnData['status'] = Rma::STATUS_REQUESTED;
         $returnData['credit_note'] = self::CREDIT_NOTE_PREFIX . $this->getCNCount();
+
         return $return->setData($returnData)->save();
     }
 
@@ -79,6 +91,23 @@ class Authorize extends AbstractIncomingMethod
         }
 
         return $item->setData($returnId, $itemData)->save();
+    }
+
+    /**
+     * Get order id by increment id.
+     *
+     * @param $incrementId
+     * @return mixed
+     */
+    protected function getOrderIdByIncrementId($incrementId)
+    {
+        return $this->getDb()->createQueryBuilder()
+            ->select('id')
+            ->from('`' . Order::TABLE_NAME . '`')
+            ->where('`increment_id` = :incrementId')
+            ->setParameter(':incrementId', $incrementId)
+            ->execute()
+            ->fetchColumn();
     }
 
     /**
@@ -106,7 +135,7 @@ class Authorize extends AbstractIncomingMethod
             ->execute()
             ->fetch();
 
-        foreach(['net_amount', 'gross_amount', 'taxes_amount', 'taxes_rate'] as $field) {
+        foreach(['product_name', 'net_amount', 'gross_amount', 'taxes_amount', 'taxes_rate'] as $field) {
             $itemData[$field] = $orderItem[$field];
         }
     }

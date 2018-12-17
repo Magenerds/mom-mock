@@ -57,7 +57,7 @@ $app->get('/', OrderController::class . ':listAction');
 $app->get('/order/{id}', OrderController::class . ':detailAction');
 $app->get('/shipment/create', ShipmentController::class . ':createShipmentAction');
 
-$app->get('/rma/approve', RmaController::class . ':createRmaApproveAction');
+$app->get('/rma/approve', RmaController::class . ':approveRmaAction');
 
 $app->post('/', MomController::class . ':indexAction');
 $app->post('/delegate/oms', MomController::class . ':indexAction');

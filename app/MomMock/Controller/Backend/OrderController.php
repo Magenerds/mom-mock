@@ -80,28 +80,11 @@ class OrderController extends AbstractBackendController
             'order/detail.twig',
             [
                 'order' => $this->getOrderDetails($id),
-                'returns' => $this->getReturnDetails($this->getIncrementIdById($id))
+                'returns' => $this->getReturnDetails($id)
             ]
         ));
 
         return $response;
-    }
-
-    /**
-     * Get increment id by entity id.
-     *
-     * @param $id
-     * @return bool|string
-     */
-    private function getIncrementIdById($id)
-    {
-        return $this->getDb()->createQueryBuilder()
-            ->select('increment_id')
-            ->from('`' . Order::TABLE_NAME . '`')
-            ->where('`id` = ?')
-            ->setParameter(0, $id)
-            ->execute()
-            ->fetchColumn();
     }
 
     /**
@@ -154,7 +137,7 @@ class OrderController extends AbstractBackendController
             $items = $db->createQueryBuilder()
                 ->select('*')
                 ->from('`' . RmaItem::TABLE_NAME . '`')
-                ->where('`return_id` = ?')
+                ->where('`'. RmaItem::RMA_ID_FIELD . '` = ?')
                 ->setParameter(0, $id)
                 ->execute()
                 ->fetchAll();

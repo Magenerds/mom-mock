@@ -15,6 +15,8 @@ use MomMock\Method\Postsales\AbstractUpdated;
 
 /**
  * Class Updated
+ *
+ * @package MomMock\Method\Postsales\RefundManagement
  * @author  Harald Deiser <h.deiser@techdivision.com>
  */
 class Updated extends AbstractUpdated

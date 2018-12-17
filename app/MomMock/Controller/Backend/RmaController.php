@@ -31,7 +31,7 @@ class RmaController extends AbstractBackendController
      * @param Response $response
      * @return Response
      */
-    public function createRmaApproveAction(Request $request, Response $response)
+    public function approveRmaAction(Request $request, Response $response)
     {
         $params = $request->getQueryParams();
 

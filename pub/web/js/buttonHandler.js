@@ -102,7 +102,7 @@ var buttonHandler = {
      * @private
      */
     _generecResultHandler: function(responseObject, message) {
-        message = message || "An error occure.";
+        message = message || "An error occured.";
         if (responseObject.status === buttonHandler.CONST_STATUS_OK) {
             window.location.reload();
         } else {

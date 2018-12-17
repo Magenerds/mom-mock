@@ -15,6 +15,8 @@ use MomMock\Method\Postsales\AbstractUpdated;
 
 /**
  * Class Updated
+ *
+ * @package MomMock\Method\Postsales\ReturnManagement
  * @author  Harald Deiser <h.deiser@techdivision.com>
  */
 class Updated extends AbstractUpdated
@@ -62,8 +64,8 @@ class Updated extends AbstractUpdated
         $updatedData['return']['lines'] = $lines;
         $result = $this->rpcClient->send($updatedData, $method);
 
-        $this->setRmaStatus($rmaId);
-        $this->setRmaItemStatus($rmaItems);
+        $this->setRmaCompleteStatus($rmaId);
+        $this->setRmaCompleteItemStatus($rmaItems);
 
         return $result;
     }
