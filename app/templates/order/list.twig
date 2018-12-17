@@ -24,7 +24,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for order in orders %}
+                    {% for order in orders | sort | reverse %}
                         <tr>
                             <td>{{ order.increment_id }}</td>
                             <td>{{ order.store }}</td>

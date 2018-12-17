@@ -12,6 +12,7 @@
 
 use Doctrine\DBAL\DriverManager;
 use MomMock\Controller\Backend\OrderController;
+use MomMock\Controller\Backend\RmaController;
 use MomMock\Controller\Backend\ShipmentController;
 use MomMock\Controller\EventsController;
 use MomMock\Controller\TokenController;
@@ -55,6 +56,9 @@ $container['rpc_client'] = function($c) {
 $app->get('/', OrderController::class . ':listAction');
 $app->get('/order/{id}', OrderController::class . ':detailAction');
 $app->get('/shipment/create', ShipmentController::class . ':createShipmentAction');
+
+$app->get('/rma/approve', RmaController::class . ':approveRmaAction');
+
 $app->post('/', MomController::class . ':indexAction');
 $app->post('/delegate/oms', MomController::class . ':indexAction');
 $app->post('/events', EventsController::class . ':indexAction');

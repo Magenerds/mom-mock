@@ -1,0 +1,50 @@
+{
+  "refund": {
+    "credit_note_date": "{{rma.date}}",
+    "credit_note_number": "{{rma.credit_note}}",
+    "custom_attributes": [],
+    "lines": [
+      {
+        "order_item_id": "{{rma_item.id}}",
+        "order_line": "{{rma_item.line_number}}",
+        "payments": [
+          {
+            "details": {
+              "cost_gross": "{{rma_item.gross_amount}}",
+              "cost_net": "{{rma_item.net_amount}}",
+              "cost_vat": "{{rma_item.taxes_amount}}",
+              "vat_detail": [
+                {
+                  "amount": "{{rma_item.taxes_amount}}",
+                  "rate": "{{rma_item.taxes_rate}}",
+                  "type": "VAT"
+                }
+              ],
+              "vat_rate": "{{rma_item.taxes_rate}}"
+            },
+            "status": {
+              "code": "REFUNDED",
+              "name": "REFUNDED"
+            }
+          }
+        ],
+        "reason": "{{rma_item.reason}}",
+        "reason_description": "{{rma_item.reason_description}}"
+      }
+    ],
+    "order_id": "{{rma.increment_id}}",
+    "refund_reason": "RELEASESUCCESS",
+    "refund_type": "Return",
+    "rma": "{{rma.rma_id}}",
+    "sales_channel_id": "{{rma.sales_channel}}",
+    "status": {
+      "code": "RELEASED",
+      "date": "{{rma.date}}",
+      "name": "RELEASED",
+      "reason_code": "REQUESTED",
+      "reason_name": "REQUESTED"
+    },
+    "store_id": "{{rma.source}}",
+    "user": "LOGISTICS"
+  }
+}
