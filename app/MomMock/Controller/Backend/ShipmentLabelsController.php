@@ -1,13 +1,10 @@
 <?php
 /**
- * Copyright (c) 2018 Magenerds
- * All rights reserved
+ * NOTICE OF LICENSE
  *
- * This product includes proprietary software developed at Magenerds, Germany
- * For more information see http://www.magenerds.com/
- *
- * To obtain a valid license for using this software please contact us at
- * info@magenerds.com
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  */
 
 namespace MomMock\Controller\Backend;

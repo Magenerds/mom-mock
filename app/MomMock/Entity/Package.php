@@ -1,4 +1,11 @@
 <?php declare(strict_types=1);
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ */
 
 namespace MomMock\Entity;
 
@@ -12,6 +19,7 @@ use function array_map as map;
 class Package extends AbstractEntity
 {
     private const TABLE_NAME = 'shipping_package';
+    
     private const ORDER_ITEMS_LINK_TABLE_NAME = 'shipping_package_item';
 
     /** @var int */
