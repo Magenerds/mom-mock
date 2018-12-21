@@ -143,6 +143,9 @@ class Package extends AbstractEntity
         $this->carrier = $carrier;
     }
 
+    /**
+     * @return string
+     */
     public function getTrackingNumber(): string
     {
         return $this->trackingNumber;
