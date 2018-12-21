@@ -17,7 +17,6 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 /**
- * Class ShipmentDetailsController
  * @package MomMock\Controller\Backend
  */
 class ShipmentLabelsController extends AbstractBackendController
@@ -29,24 +28,23 @@ class ShipmentLabelsController extends AbstractBackendController
      * @param Response $response
      * @return Response
      */
-    public function requestShipmentLabelsAction(Request $request, Response $response)
+    public function requestShipmentLabelsAction(Request $request, Response $response): Response
     {
         $params = $request->getQueryParams();
 
         if (empty($params['order_id']) || empty($params['order_item_ids'])) {
             return $response->withStatus(404, 'No order id was specified given');
         }
-        
-        $requestShippingLabels = new RequestShippingDetails(
-            $this->getDb(),
-            $this->getMethodResolver(),
-            $this->getTemplateHelper(),
-            $this->getRpcClient()
-        );
 
         try {
-            $result = $requestShippingLabels->send($params);
-            return $response->write($result);
+            $requestShippingLabels = new RequestShippingDetails(
+                $this->getDb(),
+                $this->getMethodResolver(),
+                $this->getTemplateHelper(),
+                $this->getRpcClient()
+            );
+
+            return $response->write($requestShippingLabels->send($params));
         } catch (\Exception $e) {
             return $response->withStatus(500, $e->getMessage());
         }

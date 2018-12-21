@@ -36,7 +36,7 @@
             <div class="col-md-6" data-id="{{ order.general.id }}">
                 <button type="button" class="btn btn-warning shipment-btn">Shipment</button>
                 <button type="button" class="btn btn-danger">Cancel</button>
-                <button type="button" class="btn btn-warning shipment-details-btn">Shipment Details</button>
+                <button type="button" class="btn btn-warning shipment-details-btn">Shipment Label</button>
             </div>
         </div>
 
@@ -89,6 +89,17 @@
                                 {% endif %}
                             </td>
                         </tr>
+                        {% for package in item.packages %}
+                        <tr>
+                            <td colspan="6">
+                                Package {{ package.id }} [
+                                <a href="{{ package.tracking_link }}">Tracking Link</a> |
+                                <a href="{{ package.shipping_label_link }}">Shipping Label</a>
+                                ]<br/>
+                                Tracking Number: <code>{{ package.tracking_number }}</code>
+                            </td> 
+                        </tr>
+                        {% endfor %}
                     {% endfor %}
                     </tbody>
                 </table>

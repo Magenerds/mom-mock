@@ -11,8 +11,8 @@ use function array_map as map;
 
 class Package extends AbstractEntity
 {
-    const TABLE_NAME = 'shipping_package';
-    const ORDER_ITEMS_LINK_TABLE_NAME = 'shipping_package_item';
+    private const TABLE_NAME = 'shipping_package';
+    private const ORDER_ITEMS_LINK_TABLE_NAME = 'shipping_package_item';
 
     /** @var int */
     private $id;
@@ -35,6 +35,11 @@ class Package extends AbstractEntity
     /** @var int[] */
     private $items = [];
 
+    /**
+     * @param Connection $db
+     * @param mixed[] $data
+     * @return Package
+     */
     public static function createFromArray(Connection $db, array $data): Package
     {
         $package = new self($db);
@@ -50,52 +55,82 @@ class Package extends AbstractEntity
         return $package;
     }
 
+    /**
+     * @return string
+     */
     public function getTrackingComment(): string
     {
         return $this->trackingComment;
     }
 
-    public function setTrackingComment(string $trackingComment)
+    /**
+     * @param string $trackingComment
+     */
+    public function setTrackingComment(string $trackingComment): void
     {
         $this->trackingComment = $trackingComment;
     }
 
+    /**
+     * @return string
+     */
     public function getShippingLabelLink(): string
     {
         return $this->shippingLabelLink;
     }
 
-    public function setShippingLabelLink(string $shippingLabelLink)
+    /**
+     * @param string $shippingLabelLink
+     */
+    public function setShippingLabelLink(string $shippingLabelLink): void
     {
         $this->shippingLabelLink = $shippingLabelLink;
     }
 
+    /**
+     * @return array
+     */
     public function getItems(): array
     {
         return $this->items;
     }
 
-    public function setItems(array $items)
+    /**
+     * @param array $items
+     */
+    public function setItems(array $items): void
     {
         $this->items = $items;
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId(int $id)
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
+    /**
+     * @return string
+     */
     public function getCarrier(): string
     {
         return $this->carrier;
     }
 
-    public function setCarrier(string $carrier)
+    /**
+     * @param string $carrier
+     */
+    public function setCarrier(string $carrier): void
     {
         $this->carrier = $carrier;
     }
@@ -105,17 +140,26 @@ class Package extends AbstractEntity
         return $this->trackingNumber;
     }
 
-    public function setTrackingNumber(string $trackingNumber)
+    /**
+     * @param string $trackingNumber
+     */
+    public function setTrackingNumber(string $trackingNumber): void
     {
         $this->trackingNumber = $trackingNumber;
     }
 
+    /**
+     * @return string
+     */
     public function getTrackingLink(): string
     {
         return $this->trackingLink;
     }
 
-    public function setTrackingLink(string $trackingLink)
+    /**
+     * @param string $trackingLink
+     */
+    public function setTrackingLink(string $trackingLink): void
     {
         $this->trackingLink = $trackingLink;
     }
@@ -124,7 +168,7 @@ class Package extends AbstractEntity
      * @throws InvalidArgumentException
      * @throws ConnectionException
      */
-    public function save()
+    public function save(): void
     {
         $this->db->beginTransaction();
         $this->savePackage();
@@ -132,49 +176,78 @@ class Package extends AbstractEntity
         $this->db->commit();
     }
 
-    private function setField(QueryBuilder $queryBuilder, string $field, $value)
-    {
-        $placeholder = ':' . $field;
-        $queryBuilder->setValue($field, $placeholder)->setParameter($placeholder, $value);
-    }
-
-    private function savePackage()
+    /**
+     * 
+     */
+    private function savePackage(): void
     {
         $queryBuilder = $this->db->createQueryBuilder();
 
-        $this->isKnownPackageEntity() ?
-            $queryBuilder->update($this->quotedTableName()) :
-            $queryBuilder->insert($this->quotedTableName());
+        $values = [
+            'id' => $this->getId(),
+            'carrier' => $this->getCarrier(),
+            'tracking_number' => $this->getTrackingNumber(),
+            'tracking_link' => $this->getTrackingLink(),
+            'tracking_comment' => $this->getTrackingComment(),
+            'shipping_label_link' => $this->getShippingLabelLink(),
+        ];
 
-        $this->setField($queryBuilder, 'id', $this->getId());
-        $this->setField($queryBuilder, 'carrier', $this->getCarrier());
-        $this->setField($queryBuilder, 'tracking_number', $this->getTrackingNumber());
-        $this->setField($queryBuilder, 'tracking_link', $this->getTrackingLink());
-        $this->setField($queryBuilder, 'tracking_comment', $this->getTrackingComment());
-        $this->setField($queryBuilder, 'shipping_label_link', $this->getShippingLabelLink());
+        $this->isKnownPackageEntity() ?
+            $this->updatePackage($queryBuilder, $values) :
+            $this->insertPackage($queryBuilder, $values);
 
         $queryBuilder->execute();
     }
 
     /**
+     * @param QueryBuilder $queryBuilder
+     * @param mixed[] $values
+     */
+    private function insertPackage(QueryBuilder $queryBuilder, array $values): void
+    {
+        $queryBuilder->insert(self::quotedTableName());
+        foreach ($values as $field => $value) {
+            $queryBuilder->setValue($field, $queryBuilder->expr()->literal($value));
+        }
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param mixed[] $values
+     */
+    private function updatePackage(QueryBuilder $queryBuilder, array $values): void
+    {
+        $queryBuilder->update(self::quotedTableName());
+        $queryBuilder->where('id = :id');
+        $queryBuilder->setParameter(':id', $this->getId());
+        
+        foreach ($values as $field => $value) {
+            $queryBuilder->set($field, $queryBuilder->expr()->literal($value));
+        }
+    }
+
+    /**
      * @throws InvalidArgumentException
      */
-    private function savePackageItems()
+    private function savePackageItems(): void
     {
-        $this->db->delete($this->quotedLinkTableName(), ['package_id' => $this->getId()]);
+        $this->db->delete(self::quotedLinkTableName(), ['package_id' => $this->getId()]);
+        map([$this, 'linkPackageItem'], $this->getItems());
+    }
 
-        map(function (int $itemId) {
-            $this->db->insert(
-                $this->quotedLinkTableName(),
-                ['package_id' => $this->getId(), 'order_item_id' => $itemId]
-            );
-        }, $this->getItems());
+    /**
+     * @param int $itemId
+     */
+    private function linkPackageItem(int $itemId): void
+    {
+        $values = ['package_id' => $this->getId(), 'order_item_id' => $itemId];
+        $this->db->insert(self::quotedLinkTableName(), $values);
     }
 
     /**
      * @return string
      */
-    private function quotedTableName(): string
+    private static function quotedTableName(): string
     {
         return sprintf("`%s`", self::TABLE_NAME);
     }
@@ -182,11 +255,14 @@ class Package extends AbstractEntity
     /**
      * @return string
      */
-    private function quotedLinkTableName(): string
+    private static function quotedLinkTableName(): string
     {
         return sprintf("`%s`", self::ORDER_ITEMS_LINK_TABLE_NAME);
     }
 
+    /**
+     * @return bool
+     */
     private function isKnownPackageEntity(): bool
     {
         if (! $this->getId()) {
@@ -194,10 +270,27 @@ class Package extends AbstractEntity
         }
 
         return (bool) $this->db->createQueryBuilder()->select('COUNT(*)')
-            ->from($this->quotedTableName())
+            ->from(self::quotedTableName())
             ->where('`id` = ?')
             ->setParameter(0, $this->getId())
             ->execute()
             ->fetchColumn(0);
+    }
+
+    /**
+     * @param Connection $db
+     * @param int ...$orderItemIds
+     * @return array[]
+     */
+    public static function fetchForOrderItemIds(Connection $db, int ...$orderItemIds): array
+    {
+        $queryBuilder = $db->createQueryBuilder();
+
+        return $queryBuilder->select('p.*, link.order_item_id')
+            ->from(self::quotedTableName(), 'p')
+            ->leftJoin('p', self::quotedLinkTableName(), 'link', 'link.order_item_id IN (:order_item_ids)')
+            ->setParameter('order_item_ids', $orderItemIds, Connection::PARAM_INT_ARRAY)
+            ->execute()
+            ->fetchAll();
     }
 }

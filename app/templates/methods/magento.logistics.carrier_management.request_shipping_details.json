@@ -64,7 +64,7 @@
                 "details": [],
                 "id": "{{order.id}}",
                 "items": [
-                    "{{order_item.line_number}}"
+                    "{{order_item.id}}"
                 ],
                 "tracking_comment": "MOM Mock",
                 "tracking_link": "http://mom.mock",
