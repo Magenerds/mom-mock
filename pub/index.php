@@ -35,7 +35,7 @@ $container = $app->getContainer();
 
 $container['db'] = function($c) {
     return DriverManager::getConnection([
-        'dbname' => 'magento_order_management_mock',
+        'dbname' => 'mom',
         'user' => 'root',
         'password' => 'root',
         'host' => 'localhost',
