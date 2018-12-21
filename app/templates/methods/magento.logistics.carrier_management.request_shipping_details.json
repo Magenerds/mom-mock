@@ -60,15 +60,15 @@
                         "sku": "{{order_item.sku}}"
                     }
                 ],
-                "carrier": "DHL ",
+                "carrier": "DHL",
                 "details": [],
                 "id": "{{order.id}}",
                 "items": [
                     "{{order_item.id}}"
                 ],
-                "tracking_comment": "MOM Mock",
-                "tracking_link": "http://mom.mock",
-                "tracking_number": "1234567890"
+                "tracking_comment": "",
+                "tracking_link": "",
+                "tracking_number": ""
             }
         ]
     }
