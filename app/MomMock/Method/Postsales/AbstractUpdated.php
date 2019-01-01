@@ -70,7 +70,7 @@ abstract class AbstractUpdated extends AbstractOutgoingMethod
         $queryBuilder->update('`' . Rma::TABLE_NAME . '`', 'ri')
             ->set('ri.status', ':status')
             ->setParameter(':status', Rma::STATUS_COMPLETE)
-            ->where('`' . Rma::ID_FIELD . ' = :rma_id')
+            ->where('`' . Rma::ID_FIELD . '` = :rma_id')
             ->setParameter(':rma_id', $rmaId)
             ->execute();
     }
