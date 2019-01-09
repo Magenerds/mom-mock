@@ -13,14 +13,19 @@
 namespace MomMock\Controller\Backend;
 
 use MomMock\Entity\Order\Item;
+use MomMock\Entity\Package;
 use MomMock\Entity\Rma;
 use MomMock\Entity\Order;
 use MomMock\Entity\Rma\Item as RmaItem;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+use function array_map as map;
+use function array_reduce as reduce;
+use function array_filter as filter;
+use function array_values as values;
+
 /**
- * Class OrderController
  * @package MomMock\Controller\Backend
  * @author  Florian Sydekum <f.sydekum@techdivision.com>
  */
@@ -36,7 +41,7 @@ class OrderController extends AbstractBackendController
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function listAction(Request $request, Response $response)
+    public function listAction(Request $request, Response $response): Response
     {
         $db = $this->getDb();
 
@@ -67,7 +72,7 @@ class OrderController extends AbstractBackendController
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function detailAction(Request $request, Response $response, $params)
+    public function detailAction(Request $request, Response $response, $params): Response
     {
         $id = 0;
         if (isset($params['id'])) {
@@ -80,20 +85,20 @@ class OrderController extends AbstractBackendController
             'order/detail.twig',
             [
                 'order' => $this->getOrderDetails($id),
-                'returns' => $this->getReturnDetails($id)
+                'returns' => $this->getReturnDetails($id),
             ]
         ));
 
         return $response;
     }
-
+    
     /**
      * Get order details by id.
      *
-     * @param $id
-     * @return array
+     * @param int|string $id
+     * @return array[]
      */
-    private function getOrderDetails($id)
+    private function getOrderDetails($id): array
     {
         $db = $this->getDb();
         $general = $db->createQueryBuilder()
@@ -112,14 +117,32 @@ class OrderController extends AbstractBackendController
             ->execute()
             ->fetchAll();
 
-        return ['general' => $general, 'items' => $items];
+        return ['general' => $general, 'items' => $this->mergeShippingPackageData($items)];
     }
 
     /**
-     * @param $id
-     * @return array
+     * @param mixed[] $item
+     * @param array[] $packages
+     * @return array[]
      */
-    private function getReturnDetails($orderId)
+    private function filterPackagesForItem(array $item, array $packages): array
+    {
+        $packagesForItem = filter($packages, function (array $package) use ($item) {
+            return $package['order_item_id'] === $item['id'];
+        });
+        $packagesGroupedByTrackingNumber = values(reduce($packagesForItem, function (array $acc, array $package) {
+            $acc[$package['tracking_number']] = $package;
+            return $acc;
+        }, []));
+
+        return $packagesGroupedByTrackingNumber;
+    }
+
+    /**
+     * @param int|string $orderId
+     * @return array[]
+     */
+    private function getReturnDetails($orderId): array
     {
         $db = $this->getDb();
         $result = [];
@@ -146,5 +169,35 @@ class OrderController extends AbstractBackendController
         }
 
         return $result;
+    }
+
+    /**
+     * @param array[] $items
+     * @return int[]
+     */
+    private function nonShippingOrderItemIds(array $items): array
+    {
+        $orderItemIds = map(function (array $item) {
+            return $item['id'];
+        }, $items);
+        $nonShippingOrderItemIds = filter($orderItemIds, function ($orderItemId) {
+            return $orderItemId !== 'SHIPPING';
+        });
+
+        return values(map('intval', $nonShippingOrderItemIds));
+    }
+
+    /**
+     * @param array[] $items
+     * @return array[]
+     */
+    private function mergeShippingPackageData(array $items): array
+    {
+        $packages = Package::fetchForOrderItemIds($this->getDb(), ...$this->nonShippingOrderItemIds($items));
+
+        return map(function (array $item) use ($packages) {
+            $item['packages'] = $this->filterPackagesForItem($item, $packages);
+            return $item;
+        }, $items);
     }
 }
