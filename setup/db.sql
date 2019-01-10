@@ -82,7 +82,7 @@ CREATE TABLE `flags` (
   id INT(6) UNSIGNED AUTO_INCREMENT UNIQUE PRIMARY KEY,
   name VARCHAR(50),
   value VARCHAR(255)
-)
+);
 
 INSERT INTO `flags` (`name`, `value`) VALUES ('credit_note_counter', 0);
 
