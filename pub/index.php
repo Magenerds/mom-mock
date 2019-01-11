@@ -14,6 +14,7 @@ use Doctrine\DBAL\DriverManager;
 use MomMock\Controller\Backend\OrderController;
 use MomMock\Controller\Backend\RmaController;
 use MomMock\Controller\Backend\ShipmentController;
+use MomMock\Controller\Backend\ShipmentLabelsController;
 use MomMock\Controller\EventsController;
 use MomMock\Controller\TokenController;
 use MomMock\Controller\MomController;
@@ -23,7 +24,12 @@ use MomMock\Helper\RpcClient;
 
 require '../vendor/autoload.php';
 
-$app = new \Slim\App;
+$configuration = [
+    'settings' => [
+        'displayErrorDetails' => true,
+    ],
+];
+$app = new \Slim\App(new \Slim\Container($configuration));
 
 $container = $app->getContainer();
 
@@ -56,9 +62,8 @@ $container['rpc_client'] = function($c) {
 $app->get('/', OrderController::class . ':listAction');
 $app->get('/order/{id}', OrderController::class . ':detailAction');
 $app->get('/shipment/create', ShipmentController::class . ':createShipmentAction');
-
 $app->get('/rma/approve', RmaController::class . ':approveRmaAction');
-
+$app->get('/shipment/labels', ShipmentLabelsController::class . ':requestShipmentLabelsAction');
 $app->post('/', MomController::class . ':indexAction');
 $app->post('/delegate/oms', MomController::class . ':indexAction');
 $app->post('/events', EventsController::class . ':indexAction');

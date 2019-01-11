@@ -82,7 +82,7 @@ CREATE TABLE `flags` (
   id INT(6) UNSIGNED AUTO_INCREMENT UNIQUE PRIMARY KEY,
   name VARCHAR(50),
   value VARCHAR(255)
-)
+);
 
 INSERT INTO `flags` (`name`, `value`) VALUES ('credit_note_counter', 0);
 
@@ -106,4 +106,23 @@ CREATE TABLE `product_child` (
   `child_sku` varchar(255) NOT NULL DEFAULT '',
   UNIQUE KEY `child_id` (`child_sku`,`product_id`),
   KEY `PRODUCT_CHILD_PRODUCT_ID_PRODUCT` (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Create the package table
+CREATE TABLE `shipping_package` (
+  `id` int(11) unsigned NOT NULL,
+  `carrier` varchar(255) NOT NULL,
+  `tracking_number` varchar(255) NOT NULL,
+  `tracking_link` varchar(1024) NOT NULL,
+  `tracking_comment` varchar(1024) NOT NULL,
+  `shipping_label_link` varchar(1024) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Create the link table between shipping packages and order items
+CREATE TABLE `shipping_package_item` (
+  `package_id` int(11) unsigned NOT NULL,
+  `order_item_id` int(6) unsigned NOT NULL,
+  FOREIGN KEY (package_id) REFERENCES `shipping_package`(id)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

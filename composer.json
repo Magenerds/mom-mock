@@ -21,7 +21,8 @@
         "slim/slim": "^3.0",
         "doctrine/dbal": "~2.5.0",
         "twig/twig": "^2.4",
-        "twbs/bootstrap": "^4.1"
+        "twbs/bootstrap": "^4.1",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
