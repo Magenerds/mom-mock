@@ -1,5 +1,4 @@
 /**
- * /**
  * Copyright (c) 2018 Magenerds
  * All rights reserved
  *
@@ -19,13 +18,14 @@ var buttonHandler = {
     buttons: {
         'return-approve': 'returnApprove',
         'return-cancel': 'returnCancel',
-        'shipment-btn': 'shipment'
+        'shipment-btn': 'shipment',
+        'shipment-details-btn': 'requestShipmentLabel'
     },
 
     /**
      * Inital all events for buttons.
      */
-    inital: function() {
+    initial: function() {
         for (var button in this.buttons) {
             var buttonFunction = this.buttons[button],
                 elements = document.getElementsByClassName(button);
@@ -60,6 +60,24 @@ var buttonHandler = {
     },
 
     /**
+     * Return array with IDs of selected order items.
+     * 
+     * @returns int[]
+     * @private
+     */
+    _getSelectedItemsIds: function () {
+        var allItems = document.getElementsByClassName('item-select'),
+            orderItemIds = [];
+
+        for (var i = 0; i < allItems.length; i++) {
+            if(allItems[i].checked) {
+                orderItemIds.push(allItems[i].getAttribute('value'));
+            }
+        }
+        return orderItemIds;
+    },
+
+    /**
      * Function which will be registered for shipment button.
      *
      * @param e
@@ -67,19 +85,34 @@ var buttonHandler = {
     shipment: function(e) {
         e.preventDefault();
         var orderId = e.currentTarget.parentNode.getAttribute('data-id'),
-            orderItemIds = [];
-
-        var allItems = document.getElementsByClassName('item-select');
-
-        for (var i = 0; i < allItems.length; i++) {
-            if(allItems[i].checked) {
-                orderItemIds.push(allItems[i].getAttribute('value'));
-            }
-        }
-
+            orderItemIds = buttonHandler._getSelectedItemsIds();
+        
         buttonHandler._ajaxRequest(
             '/shipment/create?order_id=' + orderId + '&order_item_ids=' + orderItemIds.join(','),
             '_shipmentResultHandler'
+        );
+
+    },
+    
+    /**
+     * Send Ajax request that will trigger Magento to return shipment details including a shipping label
+     *
+     * @param e
+     * @private
+     */
+    requestShipmentLabel: function(e) {
+        e.preventDefault();
+        const orderId = e.currentTarget.parentNode.getAttribute('data-id');
+        const orderItemIds = buttonHandler._getSelectedItemsIds();
+
+        if (0 === orderItemIds.length) {
+            alert('Please select the line item(s) to request shipping label(s) for');
+            return;
+        }
+
+        buttonHandler._ajaxRequest(
+            '/shipment/labels?order_id=' + orderId + '&order_item_ids=' + orderItemIds.join(','),
+            '_generecResultHandler'
         );
 
     },
@@ -113,8 +146,8 @@ var buttonHandler = {
     /**
      * Function to handle ajax requests.
      *
-     * @param url
-     * @param resultHandler
+     * @param url String
+     * @param resultHandler String
      * @private
      */
     _ajaxRequest: function(url, resultHandler = null) {
@@ -133,4 +166,4 @@ var buttonHandler = {
     }
 };
 
-buttonHandler.inital();
+buttonHandler.initial();
