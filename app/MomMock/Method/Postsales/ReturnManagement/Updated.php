@@ -30,42 +30,10 @@ class Updated extends AbstractUpdated
      */
     public function send($data)
     {
-        $rmaId = $data['rma_id'];
+        $result = $this->sendType($data, 'return');
 
-        $rma = $this->getRmaById($rmaId);
-        $rmaItems = $this->getRmaItemsByRmaId($rmaId);
-
-        // insert order data to updated template
-        $method = $this->methodResolver->getMethodForServiceClass(get_class($this));
-        $template = $this->templateHelper->getTemplateForMethod($method);
-
-        $rma['date'] = date('c');
-
-        // insert order data
-        foreach ($rma as $key => $value) {
-            $template = str_replace(sprintf('{{rma.%s}}', $key), $value, $template);
-        }
-
-        // insert order item data
-        $updatedData = json_decode($template, true);
-
-        $lines = [];
-
-        foreach ($rmaItems as $rmaItem) {
-            $lineTemplate = json_encode($updatedData['return']['lines'], true);
-
-            foreach ($rmaItem as $key => $value) {
-                $lineTemplate = str_replace(sprintf('{{rma_item.%s}}', $key), $value, $lineTemplate);
-            }
-
-            $lines = array_merge($lines, json_decode($lineTemplate, true));
-        }
-
-        $updatedData['return']['lines'] = $lines;
-        $result = $this->rpcClient->send($updatedData, $method);
-
-        $this->setRmaCompleteStatus($rmaId);
-        $this->setRmaCompleteItemStatus($rmaItems);
+        $this->setRmaCompleteStatus($this->getRmaId($data));
+        $this->setRmaCompleteItemStatus($this->getRmaItemsByRmaId($this->getRmaId($data)));
 
         return $result;
     }

@@ -5,7 +5,7 @@
     "custom_attributes": [],
     "lines": [
       {
-        "order_item_id": "{{rma_item.id}}",
+        "order_item_id": "{{order_item.id}}",
         "order_line": "{{rma_item.line_number}}",
         "payments": [
           {
