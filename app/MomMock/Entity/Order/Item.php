@@ -34,6 +34,11 @@ class Item extends AbstractEntity
     const TABLE_NAME = 'order_item';
 
     /**
+     * Id field.
+     */
+    const ORDER_ID_FIELD = 'order_id';
+
+    /**
      * @var []
      */
     private $data;
@@ -45,7 +50,7 @@ class Item extends AbstractEntity
     public function setData($orderId, array $data)
     {
         $this->data = $data;
-        $this->data['order_id'] = $orderId;
+        $this->data[self::ORDER_ID_FIELD] = $orderId;
 
         return $this;
     }
@@ -60,7 +65,7 @@ class Item extends AbstractEntity
         $this->db->createQueryBuilder()
             ->insert(sprintf("`%s`", self::TABLE_NAME))
             ->values([
-                '`order_id`' => "'{$this->data['order_id']}'",
+                '`' . self::ORDER_ID_FIELD . '`' => "'{$this->data['order_id']}'",
                 '`id`' => "'{$this->data['id']}'",
                 '`line_number`' => "'{$this->data['line_number']}'",
                 '`product_type`' => "'{$this->data['product_type']}'",

@@ -4,7 +4,7 @@
     "lines": [
       {
         "custom_attributes": [],
-        "id": "{{rma_item.id}}",
+        "id": "{{order_item.id}}",
         "line_number": "{{rma_item.line_number}}",
         "reason": "{{rma_item.reason}}",
         "reason_description": "{{rma_item.reason_description}}",
