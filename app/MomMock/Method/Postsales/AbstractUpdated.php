@@ -35,7 +35,7 @@ abstract class AbstractUpdated extends AbstractOutgoingMethod
      * @param $type
      * @return mixed
      */
-    protected function sendType($data, $type)
+    protected function sendType($data, $type, $status = null)
     {
         $rma = $this->getRmaById($this->getRmaId($data));
         $orderItems = $this->getOrderItemsByOrderId($rma['order_id']);
@@ -46,6 +46,10 @@ abstract class AbstractUpdated extends AbstractOutgoingMethod
         $template = $this->templateHelper->getTemplateForMethod($method);
 
         $rma['date'] = date('c');
+
+        if ($status) {
+            $rma['status'] = $status;
+        }
 
         // insert order data
         foreach ($rma as $key => $value) {

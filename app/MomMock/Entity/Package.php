@@ -18,9 +18,9 @@ use function array_map as map;
 
 class Package extends AbstractEntity
 {
-    private const TABLE_NAME = 'shipping_package';
+    const TABLE_NAME = 'shipping_package';
     
-    private const ORDER_ITEMS_LINK_TABLE_NAME = 'shipping_package_item';
+    const ORDER_ITEMS_LINK_TABLE_NAME = 'shipping_package_item';
 
     /** @var int */
     private $id;

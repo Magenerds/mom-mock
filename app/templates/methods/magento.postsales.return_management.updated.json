@@ -9,7 +9,7 @@
         "reason": "{{rma_item.reason}}",
         "reason_description": "{{rma_item.reason_description}}",
         "sku": "{{rma_item.sku}}",
-        "status": "REQUESTED"
+        "status": "{{rma.status}}"
       }
     ],
     "order_id": "{{rma.increment_id}}",
@@ -21,9 +21,9 @@
     "sales_channel_id": "{{rma.sales_channel}}",
     "source_id": "{{rma.source}}",
     "status": {
-      "code": "REQUESTED",
+      "code": "{{rma.status}}",
       "date": "{{rma.date}}",
-      "name": "REQUESTED",
+      "name": "{{rma.status}}",
       "reason_code": "CSRREQUEST"
     }
   }

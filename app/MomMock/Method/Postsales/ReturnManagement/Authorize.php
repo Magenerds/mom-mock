@@ -16,6 +16,7 @@ use MomMock\Entity\Order\Item as OrderItem;
 use MomMock\Method\AbstractIncomingMethod;
 use MomMock\Entity\Rma;
 use MomMock\Entity\Rma\Item;
+use MomMock\Method\Postsales\ReturnManagement\Updated;
 
 /**
  * Class Authorize
@@ -55,6 +56,17 @@ class Authorize extends AbstractIncomingMethod
         foreach ($return['lines'] as $line) {
             $this->createReturnItem($returnId, $line, $return['order_id']);
         }
+
+        $update = new Updated(
+            $this->getDb(),
+            $this->getMethodResolver(),
+            $this->getTemplateHelper(),
+            $this->getRestClient()
+        );
+        $data['rma_id'] = $returnId;
+        $data['status'] = strtoupper(Rma::STATUS_REQUESTED);
+
+        $update->send($data);
 
         return [];
     }
