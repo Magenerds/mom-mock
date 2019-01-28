@@ -18,8 +18,10 @@ use function array_map as map;
 
 class Package extends AbstractEntity
 {
+    /**
+     * Holds table names
+     */
     const TABLE_NAME = 'shipping_package';
-    
     const ORDER_ITEMS_LINK_TABLE_NAME = 'shipping_package_item';
 
     /** @var int */
@@ -188,7 +190,7 @@ class Package extends AbstractEntity
     }
 
     /**
-     * 
+     *
      */
     private function savePackage(): void
     {
@@ -231,7 +233,7 @@ class Package extends AbstractEntity
         $queryBuilder->update(self::quotedTableName());
         $queryBuilder->where('id = :id');
         $queryBuilder->setParameter(':id', $this->getId());
-        
+
         foreach ($values as $field => $value) {
             $queryBuilder->set($field, $queryBuilder->expr()->literal($value));
         }
