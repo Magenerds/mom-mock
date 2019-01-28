@@ -190,7 +190,7 @@ class Package extends AbstractEntity
     }
 
     /**
-     * 
+     *
      */
     private function savePackage(): void
     {
@@ -233,7 +233,7 @@ class Package extends AbstractEntity
         $queryBuilder->update(self::quotedTableName());
         $queryBuilder->where('id = :id');
         $queryBuilder->setParameter(':id', $this->getId());
-        
+
         foreach ($values as $field => $value) {
             $queryBuilder->set($field, $queryBuilder->expr()->literal($value));
         }

@@ -12,6 +12,7 @@
 
 namespace MomMock\Controller\Backend;
 
+use MomMock\Entity\Rma;
 use MomMock\Method\Postsales\ReturnManagement\Updated as ReturnUpdated;
 use MomMock\Method\Postsales\RefundManagement\Updated as RefundUpdated;
 use Slim\Http\Request;
@@ -54,13 +55,14 @@ class RmaController extends AbstractBackendController
         );
 
         try {
+            $params['status'] = strtoupper(Rma::STATUS_COMPLETE);
             $resultReturn = $returnUpdated->send($params);
             $resultRefund = $refundUpdated->send($params);
 
             $result = json_encode(
                 array_merge(
-                    json_decode($resultReturn),
-                    json_decode($resultRefund)
+                    $this->getArray(json_decode($resultReturn)),
+                    $this->getArray(json_decode($resultRefund))
                 )
             );
 
@@ -69,5 +71,20 @@ class RmaController extends AbstractBackendController
         }
 
         return $response->write($result);
+    }
+
+    /**
+     * Get the value as array.
+     *
+     * @param mixed $value
+     * @return array
+     */
+    protected function getArray($value)
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        return [$value];
     }
 }

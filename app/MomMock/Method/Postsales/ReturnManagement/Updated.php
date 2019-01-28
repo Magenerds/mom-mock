@@ -11,6 +11,7 @@
  */
 namespace MomMock\Method\Postsales\ReturnManagement;
 
+use MomMock\Entity\Rma;
 use MomMock\Method\Postsales\AbstractUpdated;
 
 /**
@@ -30,10 +31,15 @@ class Updated extends AbstractUpdated
      */
     public function send($data)
     {
-        $result = $this->sendType($data, 'return');
+        $status = $data['status'];
+        unset($data['status']);
 
-        $this->setRmaCompleteStatus($this->getRmaId($data));
-        $this->setRmaCompleteItemStatus($this->getRmaItemsByRmaId($this->getRmaId($data)));
+        $result = $this->sendType($data, 'return', $status);
+
+        if ($status == strtoupper(Rma::STATUS_COMPLETE)) {
+            $this->setRmaCompleteStatus($this->getRmaId($data));
+            $this->setRmaCompleteItemStatus($this->getRmaItemsByRmaId($this->getRmaId($data)));
+        }
 
         return $result;
     }
