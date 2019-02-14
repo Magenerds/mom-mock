@@ -17,6 +17,7 @@ use MomMock\Helper\RpcClient;
 use MomMock\Helper\TemplateHelper;
 use Slim\Container;
 use MomMock\Helper\MethodResolver;
+use MomMock\Entity\Journal\Request as JournalRequest;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Doctrine\DBAL\Connection;
@@ -85,6 +86,8 @@ class MomController
             );
         }
 
+        $this->logRequest($data);
+
         $responseData = $this->methodResolver
             ->getServiceClassForMethod($data['method'])
             ->setDb($this->db)
@@ -94,5 +97,22 @@ class MomController
             ->handleRequestData($data);
 
         return $response->withJson($responseData);
+    }
+
+    /**
+     * @param $data
+     */
+    protected function logRequest($data)
+    {
+        $journal = new JournalRequest($this->db);
+        $journal->setData([
+            'delivery_id' => $data['id'],
+            'status' => JournalRequest::STATUS_SUCCESS,
+            'topic' => $data['method'],
+            'sent_at'=> date('Y-m-d H:i:s'),
+            'direction' => JournalRequest::DIRECTION_INCOMING,
+            'to' => JournalRequest::OMS_TARGET
+        ]);
+        $journal->save();
     }
 }
