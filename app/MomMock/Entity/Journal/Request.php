@@ -10,6 +10,7 @@
  * info@magenerds.com
  */
 namespace MomMock\Entity\Journal;
+
 use MomMock\Entity\AbstractEntity;
 /**
  * Class Item
@@ -69,20 +70,17 @@ class Request extends AbstractEntity
      */
     public function save()
     {
-        $this->db->createQueryBuilder()
-            ->insert(self::TABLE_NAME)
-            ->setValue('id', sprintf('"%s"', (isset($this->data['id']) ? $this->data['id'] : null)))
-            ->setValue('delivery_id', sprintf('"%s"', (isset($this->data['delivery_id']) ? $this->data['delivery_id'] : null)))
-            ->setValue('status', sprintf('"%s"', (isset($this->data['status']) ? $this->data['status'] : null)))
-            ->setValue('topic', sprintf('"%s"', (isset($this->data['status']) ? $this->data['status'] : null)))
-            ->setValue('body', sprintf('"%s"', (isset($this->data['status']) ? $this->data['status'] : null)))
-            ->setValue('sent_at', sprintf('"%s"', (isset($this->data['status']) ? $this->data['status'] : null)))
-            ->setValue('retried_at', sprintf('"%s"', (isset($this->data['retried_at']) ? $this->data['retried_at'] : null)))
-            ->setValue('tries', sprintf('"%s"', (isset($this->data['tries']) ? $this->data['tries'] : 0)))
-            ->setValue('direction', sprintf('"%s"', (isset($this->data['status']) ? $this->data['status'] : null)))
-            ->setValue('to', sprintf('"%s"', (isset($this->data['status']) ? $this->data['status'] : null)))
-            ->setValue('protocol', self::PROTOCOL)
-            ->execute();
+        $queryBuilder = $this->db->createQueryBuilder();
+
+        $queryBuilder->insert(self::TABLE_NAME);
+
+        foreach (['id', 'delivery_id', 'status', 'topic', 'body', 'sent_at', 'retried_at', 'tries', 'direction', 'to', 'protocol'] as $field) {
+            $value = isset($this->data[$field]) ? $this->data[$field] : null;
+            $queryBuilder->setValue("`$field`", $queryBuilder->expr()->literal($value));
+        }
+
+        $queryBuilder->execute();
+
         return $this->db->lastInsertId();
     }
 }
