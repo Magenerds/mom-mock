@@ -126,3 +126,19 @@ CREATE TABLE `shipping_package_item` (
   FOREIGN KEY (package_id) REFERENCES `shipping_package`(id)
     ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Create api journal table
+CREATE TABLE `journal` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Message Id',
+  `delivery_id` varchar(64) DEFAULT NULL COMMENT 'Delivery Id',
+  `status` varchar(32) DEFAULT NULL COMMENT 'Status',
+  `topic` varchar(255) DEFAULT NULL COMMENT 'Topic of the message',
+  `body` longtext COMMENT 'Body of the message',
+  `sent_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Sent At',
+  `retried_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Retried At',
+  `tries` int(10) unsigned DEFAULT NULL COMMENT 'Number of tries',
+  `direction` varchar(32) DEFAULT 'outgoing' COMMENT 'Direction in which the message is going',
+  `to` varchar(64) DEFAULT '*' COMMENT 'To which the message is being sent',
+  `protocol` varchar(64) DEFAULT 'unknown' COMMENT 'In which protocol the message is being sent or receive',
+  PRIMARY KEY (`id`)
+);

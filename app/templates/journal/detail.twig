@@ -1,0 +1,47 @@
+{% extends "index.twig" %}
+
+{% block content %}
+    <h2>API Journal {{ journal.topic }}</h2>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">API Journal</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ journal.delivery_id }}</li>
+        </ol>
+    </nav>
+
+    <div class="container">
+        <div class="row pt-1 pb-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <h5 class="card-header">General Information</h5>
+                    <div class="card-body">
+                        <span class="font-weight-bold">Delivery Id: </span>{{ journal.delivery_id }}<br>
+                        <span class="font-weight-bold">Sent at: </span>{{ journal.sent_at }}<br>
+                        <span class="font-weight-bold">Method: </span>{{ journal.topic }}<br>
+                        <span class="font-weight-bold">Delivery attempts: </span>{{ journal.tries }}<br>
+                        <span class="font-weight-bold">Endpoint: </span>{{ journal.to }}<br>
+                        <span class="font-weight-bold">Status: </span>
+                        {% if journal.status == 'SUCCESS' %}
+                            <span class="badge badge-success">
+                        {% endif %}
+                        {% if journal.status == 'IGNORED' %}
+                            <span class="badge badge-warning">
+                        {% endif %}
+                        {% if journal.status == 'ERROR' %}
+                            <span class="badge badge-danger">
+                        {% endif %}
+                        {{ journal.status }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row pt-1 pb-3">
+            <div class="col-md-12">
+               <pre>{{ journal.body }}</pre>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

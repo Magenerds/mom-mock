@@ -13,6 +13,7 @@
 namespace MomMock\Helper;
 
 use Doctrine\DBAL\Connection;
+use MomMock\Entity\Journal\Request as JournalRequest;
 
 /**
  * Class RpcClient
@@ -37,6 +38,11 @@ class RpcClient
     private $db;
 
     /**
+     * @var JournalRequest
+     */
+    private $apiJournal;
+
+    /**
      * RpcClient constructor.
      * @param Connection $db
      */
@@ -44,6 +50,7 @@ class RpcClient
         Connection $db
     ){
         $this->db = $db;
+        $this->apiJournal = new JournalRequest($this->db);
     }
 
     /**
@@ -59,8 +66,6 @@ class RpcClient
         $data['method'] = $method;
         $data['params'] = $params;
 
-        $data = json_encode($data, true);
-
         $integration = $this->db->createQueryBuilder()
             ->select('*')
             ->from('`integration`')
@@ -72,11 +77,24 @@ class RpcClient
 
         $hash = 'sha1=' . hash_hmac(
             'sha1',
-            $data,
+            json_encode($data, true),
             $secret
         );
 
-        return $this->sendRequest($data, $hash, $url);
+        $result = null;
+
+        try {
+            $result = $this->sendRequest(json_encode($data, true), $hash, $url);
+        } finally {
+            $this->apiJournal->logRequest(
+                $data,
+                $result === null ? JournalRequest::STATUS_ERROR : JournalRequest::STATUS_SUCCESS,
+                JournalRequest::DIRECTION_OUTGOING,
+                $integration['id']
+            );
+        }
+
+        return $result;
     }
 
     /**

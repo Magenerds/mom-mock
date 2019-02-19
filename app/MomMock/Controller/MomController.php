@@ -17,6 +17,7 @@ use MomMock\Helper\RpcClient;
 use MomMock\Helper\TemplateHelper;
 use Slim\Container;
 use MomMock\Helper\MethodResolver;
+use MomMock\Entity\Journal\Request as JournalRequest;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Doctrine\DBAL\Connection;
@@ -49,6 +50,11 @@ class MomController
     private $restClient;
 
     /**
+     * @var JournalRequest
+     */
+    private $apiJournal;
+
+    /**
      * MomController constructor.
      * @param Container $container
      * @throws ContainerException
@@ -60,6 +66,7 @@ class MomController
         $this->db = $container->get('db');
         $this->templateHelper = $container->get('template_helper');
         $this->restClient = $container->get('rpc_client');
+        $this->apiJournal = new JournalRequest($this->db);
     }
 
     /**
@@ -85,6 +92,13 @@ class MomController
             );
         }
 
+        $this->apiJournal->logRequest(
+            $data,
+            JournalRequest::STATUS_SUCCESS,
+            JournalRequest::DIRECTION_INCOMING,
+            JournalRequest::OMS_TARGET
+        );
+
         $responseData = $this->methodResolver
             ->getServiceClassForMethod($data['method'])
             ->setDb($this->db)
@@ -95,4 +109,6 @@ class MomController
 
         return $response->withJson($responseData);
     }
+
+
 }

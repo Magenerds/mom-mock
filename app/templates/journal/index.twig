@@ -1,0 +1,55 @@
+{% extends "index.twig" %}
+
+{% block content %}
+    <h2>API Journal</h2>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Home</li>
+            <li class="breadcrumb-item active" aria-current="page">API Journal</li>
+        </ol>
+    </nav>
+
+    <div class="container">
+        <div class="row pt-3 pb-3">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Sent at</th>
+                        <th scope="col">Delivery ID</th>
+                        <th scope="col">Method</th>
+                        <th scope="col">Endpoint</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for request in requests %}
+                        <tr>
+                            <td>{{ request.id }}</td>
+                            <td>{{ request.sent_at }}</td>
+                            <td>{{ request.delivery_id }}</td>
+                            <td>{{ request.topic }}</td>
+                            <td>{{ request.to }}</td>
+                            <td>
+                                {% if request.status == 'SUCCESS' %}
+                                <span class="badge badge-success">
+                                {% elseif request.status == 'ERROR' %}
+                                <span class="badge badge-danger">
+                                {% else %}
+                                <span class="badge badge-warning">
+                                {% endif %}
+                                    {{ request.status }}
+                                </span>
+                            </td>
+                            <td><a href="/journal/{{ request.id }}">View</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
