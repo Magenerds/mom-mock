@@ -31,6 +31,7 @@ class MethodResolver
      */
     const VALID_INCOMING_METHODS = [
         'magento.service_bus.remote.register',
+        'magento.service_bus.remote.unregister',
         'magento.sales.order_management.create',
         'magento.catalog.product_management.updated',
         'magento.postsales.return_management.authorize'
