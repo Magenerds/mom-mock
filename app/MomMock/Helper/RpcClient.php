@@ -27,7 +27,7 @@ class RpcClient
      */
     const META_DATA = [
         "jsonrpc" => "2.0",
-        "id" => 1,
+        "id" => null,
         "method" => null,
         "params" => null
     ];
@@ -63,6 +63,7 @@ class RpcClient
     public function send(array $params, string $method)
     {
         $data = self::META_DATA;
+        $data['id'] = uniqid(null, true);
         $data['method'] = $method;
         $data['params'] = $params;
 
