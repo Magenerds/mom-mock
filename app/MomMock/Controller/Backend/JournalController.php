@@ -38,7 +38,8 @@ class JournalController extends AbstractBackendController
 
         $requests = $db->createQueryBuilder()
             ->select('*')
-            ->from('`journal`')
+            ->from('`' . JournalRequest::TABLE_NAME . '`')
+            ->addOrderBy('sent_at', 'DESC')
             ->execute()
             ->fetchAll();
 

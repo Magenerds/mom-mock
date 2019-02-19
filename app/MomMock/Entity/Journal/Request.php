@@ -64,6 +64,23 @@ class Request extends AbstractEntity
     }
 
     /**
+     * @param $data
+     */
+    public function logRequest($data, $status, $direction, $to)
+    {
+        $this->setData([
+            'delivery_id' => $data['id'],
+            'status' => $status,
+            'topic' => $data['method'],
+            'body' => json_encode($data['params']),
+            'sent_at'=> date('Y-m-d H:i:s'),
+            'direction' => $direction,
+            'to' => $to
+        ]);
+        $this->save();
+    }
+
+    /**
      * Saves an order item
      *
      * @return string

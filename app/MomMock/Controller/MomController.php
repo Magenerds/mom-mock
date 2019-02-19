@@ -50,6 +50,11 @@ class MomController
     private $restClient;
 
     /**
+     * @var JournalRequest
+     */
+    private $apiJournal;
+
+    /**
      * MomController constructor.
      * @param Container $container
      * @throws ContainerException
@@ -61,6 +66,7 @@ class MomController
         $this->db = $container->get('db');
         $this->templateHelper = $container->get('template_helper');
         $this->restClient = $container->get('rpc_client');
+        $this->apiJournal = new JournalRequest($this->db);
     }
 
     /**
@@ -86,7 +92,12 @@ class MomController
             );
         }
 
-        $this->logRequest($data);
+        $this->apiJournal->logRequest(
+            $data,
+            JournalRequest::STATUS_SUCCESS,
+            JournalRequest::DIRECTION_INCOMING,
+            JournalRequest::OMS_TARGET
+        );
 
         $responseData = $this->methodResolver
             ->getServiceClassForMethod($data['method'])
@@ -99,20 +110,5 @@ class MomController
         return $response->withJson($responseData);
     }
 
-    /**
-     * @param $data
-     */
-    protected function logRequest($data)
-    {
-        $journal = new JournalRequest($this->db);
-        $journal->setData([
-            'delivery_id' => $data['id'],
-            'status' => JournalRequest::STATUS_SUCCESS,
-            'topic' => $data['method'],
-            'sent_at'=> date('Y-m-d H:i:s'),
-            'direction' => JournalRequest::DIRECTION_INCOMING,
-            'to' => JournalRequest::OMS_TARGET
-        ]);
-        $journal->save();
-    }
+
 }
