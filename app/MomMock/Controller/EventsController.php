@@ -17,6 +17,7 @@ use MomMock\Helper\MethodResolver;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use MomMock\Entity\Journal\Request as JournalRequest;
 
 /**
  * Class MomController
@@ -36,6 +37,11 @@ class EventsController
     private $db;
 
     /**
+     * @var JournalRequest
+     */
+    private $apiJournal;
+
+    /**
      * MomController constructor.
      * @param Container $container
      * @throws \Interop\Container\Exception\ContainerException
@@ -46,6 +52,7 @@ class EventsController
     {
         $this->methodResolver = $container->get('method_resolver');
         $this->db = $container->get('db');
+        $this->apiJournal = new JournalRequest($this->db);
     }
 
     /**
@@ -64,6 +71,13 @@ class EventsController
                 404
             );
         }
+
+        $this->apiJournal->logRequest(
+            $data,
+            JournalRequest::STATUS_SUCCESS,
+            JournalRequest::DIRECTION_INCOMING,
+            JournalRequest::OMS_TARGET
+        );
 
         $responseData = $this->methodResolver
             ->getServiceClassForMethod($data['method'])
