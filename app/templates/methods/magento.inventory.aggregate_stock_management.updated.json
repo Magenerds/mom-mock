@@ -1,0 +1,13 @@
+{
+  "snapshot": {
+    "aggregate_id": "{{aggregate_name}}",
+    "created_on": "{{created_on}}",
+    "mode": "{{mode}}",
+    "stock": [
+      {
+        "quantity": "{{qty}}",
+        "sku": "{{sku}}"
+      }
+    ]
+  }
+}

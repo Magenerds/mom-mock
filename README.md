@@ -55,7 +55,7 @@ OAuth token.
 | magento.catalog.product_management.updated | oms | Export Product to MOM | ✓ |
 | magento.postsales.return_management.updated | mdc | Update RMA status | ✓ |
 | magento.postsales.refund_management.updated | mdc | Creates a creditmemo | ✓ |
-| magento.inventory.aggregate_stock_management.updated | mdc | Stock update from MOM | X |
+| magento.inventory.aggregate_stock_management.updated | mdc | Stock update from MOM | ✓ |
 
 ## Features
 - Order overview and detail page
@@ -64,3 +64,5 @@ OAuth token.
 - RMA overview and approval
 - Trigger refund
 - API journal
+- Send a stock snapshot
+- Stock aggregate and source management

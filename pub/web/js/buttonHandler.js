@@ -26,6 +26,7 @@ var buttonHandler = {
      * Inital all events for buttons.
      */
     initial: function() {
+        var self = this;
         for (var button in this.buttons) {
             var buttonFunction = this.buttons[button],
                 elements = document.getElementsByClassName(button);
@@ -34,7 +35,9 @@ var buttonHandler = {
                 elements[i].addEventListener('click', buttonHandler[buttonFunction]);
 
             }
-        }
+        };
+
+        document.getElementById('aggregate-snapshot-form').addEventListener('submit', self.snapshotForAggregate);
     },
 
     /**
@@ -46,7 +49,7 @@ var buttonHandler = {
         e.preventDefault();
         var rmaId = e.currentTarget.parentNode.getAttribute('data-rma-id');
 
-        buttonHandler._ajaxRequest('/rma/approve?rma_id=' + rmaId, '_generecResultHandler');
+        buttonHandler._ajaxRequest('/rma/approve?rma_id=' + rmaId, '_genericResultHandler');
     },
 
     /**
@@ -112,7 +115,7 @@ var buttonHandler = {
 
         buttonHandler._ajaxRequest(
             '/shipment/labels?order_id=' + orderId + '&order_item_ids=' + orderItemIds.join(','),
-            '_generecResultHandler'
+            '_genericResultHandler'
         );
 
     },
@@ -124,7 +127,7 @@ var buttonHandler = {
      * @private
      */
     _shipmentResultHandler: function(responseObject) {
-        buttonHandler._generecResultHandler(responseObject, "Please select an item.");
+        buttonHandler._genericResultHandler(responseObject, "Please select an item.");
     },
 
     /**
@@ -134,7 +137,7 @@ var buttonHandler = {
      * @param message
      * @private
      */
-    _generecResultHandler: function(responseObject, message) {
+    _genericResultHandler: function(responseObject, message) {
         message = message || "An error occured.";
         if (responseObject.status === buttonHandler.CONST_STATUS_OK) {
             window.location.reload();
@@ -163,7 +166,26 @@ var buttonHandler = {
                 }
             }
         }
-    }
+    },
+
+    /**
+     * Function which will be registered for aggregate snapshot button
+     *
+     * @param e
+     */
+    snapshotForAggregate: function(e) {
+        e.preventDefault();
+
+        var aggregateId = e.target.getAttribute('data-id'),
+            qty = e.target.elements["overwrite-qty"].value,
+            mode = e.target.elements["mode"].value;
+
+        buttonHandler._ajaxRequest(
+            '/snapshot/aggregate?id=' + aggregateId + '&qty=' + qty + '&mode=' + mode,
+            '_genericResultHandler'
+        );
+
+    },
 };
 
 buttonHandler.initial();

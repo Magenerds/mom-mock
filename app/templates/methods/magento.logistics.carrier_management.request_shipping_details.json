@@ -1,83 +1,22 @@
 {
-    "shipment": {
-        "store_id": "{{order.store}}",
-        "order_id": "{{order.increment_id}}",
-        "source_id": "4025018900179",
-        "method": "dhl",
-        "items": [
-            {
-                "order_line_id": "{{order_item.id}}",
-                "order_line_number": "{{order_item.line_number}}",
-                "sku": "{{order_item.sku}}",
-                "name": "{{order_item.product_name}}",
-                "custom_details": [
-                    {
-                        "name": "imageUrl",
-                        "value": "{{order_item.image_url}}"
-                    }
-                ],
-                "image_url": "{{order_item.image_url}}",
-                "item_type": "PHYSICAL",
-                "order_line_price": {
-                    "net_amount": "{{order_item.net_amount}}",
-                    "gross_amount": "{{order_item.gross_amount}}",
-                    "tax_amount": "{{order_item.taxes_amount}}",
-                    "tax_rate": "{{order_item.taxes_rate}}",
-                    "taxes": [
-                        {
-                            "type": "NO TAX",
-                            "amount": "{{order_item.taxes_amount}}",
-                            "rate": "{{order_item.taxes_rate}}"
-                        }
-                    ],
-                    "currency": "EUR"
-                },
-                "status": "ASSIGNED",
-                "status_reason": "ASSIGNED"
-            }
-        ],
-        "address": {
-            "address1": "{{order.address1}}",
-            "address_type": "customer",
-            "city": "{{order.city}}",
-            "country_code": "{{order.country_code}}",
-            "custom_attributes": [],
-            "email": "{{order.email}}",
-            "first_name": "{{order.first_name}}",
-            "last_name": "{{order.last_name}}",
-            "reference": "",
-            "zip": "{{order.zip}}"
+  "jsonrpc": "2.0",
+  "id": "5c76ee0c272732.00788345",
+  "method": "magento.inventory.aggregate_stock_management.updated",
+  "params": {
+    "snapshot": {
+      "aggregate_id": "DEFAULT-AGGREGATE",
+      "created_on": "2019-02-27 21:07:40",
+      "mode": "NONZERO",
+      "stock": [
+        {
+          "quantity": "17",
+          "sku": "MH01-XS-Gray"
         },
-        "packages": [
-            {
-                "aggregated_items": [
-                    {
-                        "aggregated_line_id": "{{order_item.id}}",
-                        "order_lines": [
-                            "{{order_item.id}}"
-                        ],
-                        "quantity": 1,
-                        "sku": "{{order_item.sku}}"
-                    }
-                ],
-                "carrier": "DHL",
-                "details": {
-                    "dimensions_unit": "cm",
-                    "height": 12,
-                    "length": 32.5,
-                    "name": "VOK 01",
-                    "weight": 0.8,
-                    "weight_unit": "kg",
-                    "width": 25
-                },
-                "id": "{{order.id}}",
-                "items": [
-                    "{{order_item.id}}"
-                ],
-                "tracking_comment": "",
-                "tracking_link": "",
-                "tracking_number": ""
-            }
-        ]
+        {
+          "quantity": "20",
+          "sku": "MH02-XS-Red"
+        }
+      ]
     }
+  }
 }

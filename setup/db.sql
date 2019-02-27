@@ -1,3 +1,6 @@
+-- --------
+-- ORDER --
+-- --------
 CREATE TABLE `order` (
 	id INT(6) UNSIGNED AUTO_INCREMENT UNIQUE PRIMARY KEY,
 	increment_id VARCHAR(30) NOT NULL,
@@ -35,6 +38,9 @@ CREATE TABLE `order_item` (
     ON UPDATE CASCADE
 );
 
+-- ------
+-- RMA --
+-- ------
 CREATE TABLE `rma` (
 	id INT(6) UNSIGNED AUTO_INCREMENT UNIQUE PRIMARY KEY,
   order_id INT(6) UNSIGNED,
@@ -72,6 +78,9 @@ CREATE TABLE `rma_item` (
     ON UPDATE CASCADE
 );
 
+-- ---------
+-- SYSTEM --
+-- ---------
 CREATE TABLE `integration` (
 	id VARCHAR(10) UNIQUE PRIMARY KEY,
 	url VARCHAR(60) NOT NULL,
@@ -86,7 +95,9 @@ CREATE TABLE `flags` (
 
 INSERT INTO `flags` (`name`, `value`) VALUES ('credit_note_counter', 0);
 
--- Create syntax for TABLE 'product'
+-- ----------
+-- PRODUCT --
+-- ----------
 CREATE TABLE `product` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Id',
   `sku` varchar(64) DEFAULT NULL COMMENT 'SKU',
@@ -100,7 +111,6 @@ CREATE TABLE `product` (
   UNIQUE KEY `sku` (`sku`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2244 DEFAULT CHARSET=utf8;
 
--- Create syntax for TABLE 'product_child'
 CREATE TABLE `product_child` (
   `product_id` int(11) unsigned NOT NULL,
   `child_sku` varchar(255) NOT NULL DEFAULT '',
@@ -108,7 +118,9 @@ CREATE TABLE `product_child` (
   KEY `PRODUCT_CHILD_PRODUCT_ID_PRODUCT` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Create the package table
+-- -----------------
+-- SHIPPING LABEL --
+-- -----------------
 CREATE TABLE `shipping_package` (
   `id` int(11) unsigned NOT NULL,
   `carrier` varchar(255) NOT NULL,
@@ -119,7 +131,6 @@ CREATE TABLE `shipping_package` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Create the link table between shipping packages and order items
 CREATE TABLE `shipping_package_item` (
   `package_id` int(11) unsigned NOT NULL,
   `order_item_id` int(6) unsigned NOT NULL,
@@ -127,7 +138,9 @@ CREATE TABLE `shipping_package_item` (
     ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Create api journal table
+-- ----------
+-- JOURNAL --
+-- ----------
 CREATE TABLE `journal` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Message Id',
   `delivery_id` varchar(64) DEFAULT NULL COMMENT 'Delivery Id',
@@ -139,6 +152,38 @@ CREATE TABLE `journal` (
   `tries` int(10) unsigned DEFAULT NULL COMMENT 'Number of tries',
   `direction` varchar(32) DEFAULT 'outgoing' COMMENT 'Direction in which the message is going',
   `to` varchar(64) DEFAULT '*' COMMENT 'To which the message is being sent',
-  `protocol` varchar(64) DEFAULT 'unknown' COMMENT 'In which protocol the message is being sent or receive',
+  `protocol` varchar(64) DEFAULT 'unknown' COMMENT 'In which protocol the message is being sent or receive'
   PRIMARY KEY (`id`)
 );
+
+-- -------------------------------
+-- STOCK AGGREGATES AND SOURCES --
+-- -------------------------------
+CREATE TABLE `aggregate` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `source` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
+  `source_id` varchar(255) NOT NULL,
+  `aggregate_id` int(11) unsigned,
+  FOREIGN KEY (aggregate_id) REFERENCES `aggregate`(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ------------
+-- INVENTORY --
+-- ------------
+CREATE TABLE `inventory` (
+  `sku` VARCHAR(255) NOT NULL,
+  `source_id` int(11) unsigned NOT NULL,
+  `qty` int(6) NOT NULL,
+  FOREIGN KEY (sku) REFERENCES `product`(sku)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (source_id) REFERENCES `source`(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

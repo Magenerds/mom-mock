@@ -13,17 +13,18 @@ namespace MomMock\Controller\Backend;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use MomMock\Entity\Journal\Request as JournalRequest;
+use MomMock\Entity\Aggregate;
+use MomMock\Entity\Source;
 
 /**
- * Class JournalController
+ * Class SourceController
  * @package MomMock\Controller\Backend
  * @author  Mahmood Dhia <m.dhia@techdivision.com>
  */
-class JournalController extends AbstractBackendController
+class SourceController extends AbstractBackendController
 {
     /**
-     * Api journal list action
+     * Aggregate list action
      *
      * @param Request $request
      * @param Response $response
@@ -36,25 +37,26 @@ class JournalController extends AbstractBackendController
     {
         $db = $this->getDb();
 
-        $requests = $db->createQueryBuilder()
+        $aggregates = $db->createQueryBuilder()
             ->select('*')
-            ->from('`' . JournalRequest::TABLE_NAME . '`')
-            ->addOrderBy('sent_at', 'DESC')
+            ->from('`' . Aggregate::TABLE_NAME . '`')
             ->execute()
             ->fetchAll();
+
+        $aggregates = $this->addSources($aggregates);
 
         $templ = $this->getTemplateEngine();
 
         $response->write($templ->render(
-            'journal/index.twig',
-            ['requests' => $requests]
+            'aggregate/index.twig',
+            ['aggregates' => $aggregates]
         ));
 
         return $response;
     }
 
     /**
-     * Api journal detail action
+     * Aggregate detail action
      *
      * @param Request $request
      * @param Response $response
@@ -71,33 +73,46 @@ class JournalController extends AbstractBackendController
             $id = $params['id'];
         }
 
+        $aggregate = $this->getDb()->createQueryBuilder()
+            ->select('*')
+            ->from('`' . Aggregate::TABLE_NAME . '`')
+            ->where('`id` = ?')
+            ->setParameter(0, $id)
+            ->execute()
+            ->fetch();
+
+        $aggregate = $this->addSources(['aggregate' => $aggregate]);
+
         $templ = $this->getTemplateEngine();
 
         $response->write($templ->render(
-            'journal/detail.twig',
-            $this->getJournalDetails($id)
+            'aggregate/detail.twig',
+            $aggregate
         ));
 
         return $response;
     }
 
     /**
-     * Get journal details by id.
+     * Add source information to aggregate
      *
-     * @param int|string $id
-     * @return array[]
+     * @param $aggregates
+     * @return mixed
      */
-    private function getJournalDetails($id): array
+    private function addSources($aggregates)
     {
-        $db = $this->getDb();
-        $journal = $db->createQueryBuilder()
-            ->select('*')
-            ->from('`' . JournalRequest::TABLE_NAME . '`')
-            ->where('`id` = ?')
-            ->setParameter(0, $id)
-            ->execute()
-            ->fetch();
+        foreach ($aggregates as &$aggregate) {
+            $sources = $this->getDb()->createQueryBuilder()
+                ->select('*')
+                ->from('`' . Source::TABLE_NAME . '`')
+                ->where('`aggregate_id` = ?')
+                ->setParameter(0, $aggregate['id'])
+                ->execute()
+                ->fetchAll();
 
-        return ['journal' => $journal];
+            $aggregate['sources'] = $sources;
+        }
+
+        return $aggregates;
     }
 }

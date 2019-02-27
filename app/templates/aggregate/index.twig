@@ -1,0 +1,49 @@
+{% extends "index.twig" %}
+
+{% block content %}
+    <h2>Stock aggregates and sources</h2>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Stock aggregates and sources</li>
+        </ol>
+    </nav>
+
+    <div class="container">
+        <div class="col-md-12 text-right">
+            <a href="/aggregate/add"><button type="button" class="btn btn-primary">+ Add aggregate</button></a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row pt-3 pb-3">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Aggregate name</th>
+                        <th scope="col">Sources</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for aggregate in aggregates %}
+                        <tr>
+                            <td>{{ aggregate.id }}</td>
+                            <td><a href="/aggregate/{{ aggregate.id }}">{{ aggregate.name }}</a></td>
+                            <td>
+                                <ul>
+                                {% for source in aggregate.sources %}
+                                    <li>{{ source.source_id }}</li>
+                                {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

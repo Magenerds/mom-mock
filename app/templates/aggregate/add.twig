@@ -1,0 +1,33 @@
+{% extends "index.twig" %}
+
+{% block content %}
+    <h2>Add stock aggregate and sources</h2>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/aggregate">Stock aggregates</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add stock aggregate and sources</li>
+        </ol>
+    </nav>
+
+    <div class="container">
+        <div class="row pt-3 pb-3">
+            <div class="col-md-12">
+                <form action="/aggregate/add" method="post">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sources">Source list</label>
+                        <input type="text" class="form-control" id="sources" name="sources">
+                        <small class="form-text text-muted">Comma separated list of sources</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
