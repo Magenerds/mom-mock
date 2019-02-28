@@ -66,3 +66,4 @@ OAuth token.
 - API journal
 - Send a stock snapshot
 - Stock aggregate and source management
+- Product and inventory overview

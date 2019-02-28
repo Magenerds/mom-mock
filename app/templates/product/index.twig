@@ -1,0 +1,39 @@
+{% extends "index.twig" %}
+
+{% block content %}
+    <h2>Products and inventory</h2>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Products and inventory</li>
+        </ol>
+    </nav>
+
+    <div class="container">
+        <div class="row pt-3 pb-3">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product name</th>
+                        <th scope="col">Sku</th>
+                        <th scope="col">Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.id }}</td>
+                            <td><a href="/product/{{ product.id }}">{{ product.name }}</a></td>
+                            <td>{{ product.sku }}</td>
+                            <td>{{ product.type }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

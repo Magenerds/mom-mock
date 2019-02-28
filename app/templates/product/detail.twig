@@ -1,0 +1,70 @@
+{% extends "index.twig" %}
+
+{% block content %}
+    <h2>Product {{ product.name }}</h2>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/product">Products and inventory</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="container">
+        <div class="col-md-12 text-right">
+            <a href="/product"><button type="button" class="btn btn-light">< Back</button></a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row pt-1 pb-3">
+            <div class="col-md-6">
+                <div class="card">
+                    <h5 class="card-header">General Information</h5>
+                    <div class="card-body">
+                        <span class="font-weight-bold">Name: </span>{{ product.name }}<br>
+                        <span class="font-weight-bold">Sku: </span>{{ product.sku }}<br>
+                        <span class="font-weight-bold">Type: </span>{{ product.type }}<br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row pt-3 pb-3">
+            <div class="col-md-12">
+                <h5 class="card-header">Child products</h5>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product name</th>
+                        <th scope="col">Sku</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Inventory</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for child in children %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child.name }}</td>
+                            <td>{{ child.sku }}</td>
+                            <td>{{ child.type }}</td>
+                            <td>
+                                <ul>
+                                {% for source in child.inventory %}
+                                   <li>{{ source.source_id }}: {{ source.qty }}</li>
+                                {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

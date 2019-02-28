@@ -17,14 +17,14 @@ use MomMock\Controller\Backend\ShipmentController;
 use MomMock\Controller\Backend\ShipmentLabelsController;
 use MomMock\Controller\Backend\JournalController;
 use MomMock\Controller\Backend\AggregateController;
-use MomMock\Controller\Backend\SourceController;
+use MomMock\Controller\Backend\ProductController;
+use MomMock\Controller\Backend\StocksnapshotController;
 use MomMock\Controller\EventsController;
 use MomMock\Controller\TokenController;
 use MomMock\Controller\MomController;
 use MomMock\Helper\MethodResolver;
 use MomMock\Helper\TemplateHelper;
 use MomMock\Helper\RpcClient;
-use MomMock\Controller\Backend\StocksnapshotController;
 
 require '../vendor/autoload.php';
 
@@ -75,8 +75,8 @@ $app->get('/aggregate/add', AggregateController::class . ':addAction');
 $app->post('/aggregate/add', AggregateController::class . ':addAction');
 $app->get('/aggregate/delete/{id}', AggregateController::class . ':deleteAction');
 $app->get('/aggregate/{id}', AggregateController::class . ':detailAction');
-$app->get('/source', SourceController::class . ':indexAction');
-$app->get('/source/{id}', SourceController::class . ':detailAction');
+$app->get('/product', ProductController::class . ':indexAction');
+$app->get('/product/{id}', ProductController::class . ':detailAction');
 $app->get('/snapshot/aggregate', StocksnapshotController::class . ':sendSnapshotForAggregateAction');
 $app->post('/', MomController::class . ':indexAction');
 $app->post('/delegate/oms', MomController::class . ':indexAction');
