@@ -1,1 +1,4 @@
-// document.getElementById('json').innerHTML = JSON.stringify(document.getElementById('json').innerText, undefined, 2);
+var pathname = window.location.pathname.split('/'),
+    id = pathname[1];
+id = (id) ? id : 'order';
+document.getElementById(id).setAttribute('class', 'active')

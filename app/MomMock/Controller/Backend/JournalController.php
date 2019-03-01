@@ -98,6 +98,8 @@ class JournalController extends AbstractBackendController
             ->execute()
             ->fetch();
 
+        $journal['body'] = json_encode(json_decode($journal['body']), JSON_PRETTY_PRINT);
+
         return ['journal' => $journal];
     }
 }

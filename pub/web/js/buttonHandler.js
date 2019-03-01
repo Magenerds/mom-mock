@@ -37,7 +37,11 @@ var buttonHandler = {
             }
         };
 
-        document.getElementById('aggregate-snapshot-form').addEventListener('submit', self.snapshotForAggregate);
+        var snapshotForm = document.getElementById('aggregate-snapshot-form');
+
+        if (snapshotForm) {
+            snapshotForm.addEventListener('submit', self.snapshotForAggregate);
+        }
     },
 
     /**

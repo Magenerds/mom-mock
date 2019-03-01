@@ -152,7 +152,7 @@ CREATE TABLE `journal` (
   `tries` int(10) unsigned DEFAULT NULL COMMENT 'Number of tries',
   `direction` varchar(32) DEFAULT 'outgoing' COMMENT 'Direction in which the message is going',
   `to` varchar(64) DEFAULT '*' COMMENT 'To which the message is being sent',
-  `protocol` varchar(64) DEFAULT 'unknown' COMMENT 'In which protocol the message is being sent or receive'
+  `protocol` varchar(64) DEFAULT 'unknown' COMMENT 'In which protocol the message is being sent or receive',
   PRIMARY KEY (`id`)
 );
 
