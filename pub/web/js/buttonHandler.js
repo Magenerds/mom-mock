@@ -19,7 +19,11 @@ var buttonHandler = {
         'return-approve': 'returnApprove',
         'return-cancel': 'returnCancel',
         'shipment-btn': 'shipment',
-        'shipment-details-btn': 'requestShipmentLabel'
+        'shipment-details-btn': 'requestShipmentLabel',
+        'set-inventory': 'setInventory',
+        'random-inventory': 'setRandomInventory',
+        'set-inventory-for-product': 'setInventoryForProduct',
+        'random-inventory-for-product': 'setRandomInventoryForProduct'
     },
 
     /**
@@ -190,6 +194,69 @@ var buttonHandler = {
         );
 
     },
+
+    /**
+     * Sets the given inventory for all products and sources
+     *
+     * @param e
+     */
+    setInventory: function(e) {
+        e.preventDefault();
+
+        var quantity = document.getElementById('quantity').value;
+
+        buttonHandler._ajaxRequest(
+            'inventory/add?qty=' + quantity,
+            '_genericResultHandler'
+        )
+    },
+
+    /**
+     * Sets a random inventory for all products and sources
+     *
+     * @param e
+     */
+    setRandomInventory: function(e) {
+        e.preventDefault();
+
+        buttonHandler._ajaxRequest(
+            'inventory/add?qty=random',
+            '_genericResultHandler'
+        )
+    },
+
+    /**
+     * Sets the given inventory for one product and all sources
+     *
+     * @param e
+     */
+    setInventoryForProduct: function(e) {
+        e.preventDefault();
+
+        var quantity = document.getElementById('quantity').value,
+            id = document.getElementById('product-id').getAttribute('data-id');
+
+        buttonHandler._ajaxRequest(
+            'inventory/add?qty=' + quantity + '&product_id=' + id,
+            '_genericResultHandler'
+        )
+    },
+
+    /**
+     * Sets a random inventory for one product and all sources
+     *
+     * @param e
+     */
+    setRandomInventoryForProduct: function(e) {
+        e.preventDefault();
+
+        var id = document.getElementById('product-id').getAttribute('data-id');
+
+        buttonHandler._ajaxRequest(
+            'inventory/add?qty=random&product_id=' + id,
+            '_genericResultHandler'
+        )
+    }
 };
 
 buttonHandler.initial();

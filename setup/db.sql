@@ -180,6 +180,7 @@ CREATE TABLE `inventory` (
   `sku` VARCHAR(255) NOT NULL,
   `source_id` int(11) unsigned NOT NULL,
   `qty` int(6) NOT NULL,
+  UNIQUE KEY `sku_source_id` (`sku`,`source_id`),
   FOREIGN KEY (sku) REFERENCES `product`(sku)
     ON DELETE CASCADE
     ON UPDATE CASCADE,

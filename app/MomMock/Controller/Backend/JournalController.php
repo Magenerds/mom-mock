@@ -40,6 +40,7 @@ class JournalController extends AbstractBackendController
             ->select('*')
             ->from('`' . JournalRequest::TABLE_NAME . '`')
             ->addOrderBy('sent_at', 'DESC')
+            ->setMaxResults(100)
             ->execute()
             ->fetchAll();
 

@@ -12,7 +12,7 @@
 
     <div class="container">
         <div class="col-md-12 text-right">
-            <a href="/product"><button type="button" class="btn btn-light">< Back</button></a>
+            <a href="/product"><button type="button" class="btn btn-outline-secondary">< Back</button></a>
         </div>
     </div>
 
@@ -25,6 +25,23 @@
                         <span class="font-weight-bold">Name: </span>{{ product.name }}<br>
                         <span class="font-weight-bold">Sku: </span>{{ product.sku }}<br>
                         <span class="font-weight-bold">Type: </span>{{ product.type }}<br>
+                        {% if product.inventory %}
+                            <span class="font-weight-bold">Inventory: </span>
+                            <ul>
+                                {% for source in product.inventory %}
+                                    <li class="{% if source.qty == 0 %}text-danger{% elseif source.qty < 10 %}text-warning{% else %}text-success{% endif %}">{{ source.source_id }}: {{ source.qty }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="quantity" placeholder="Quantity" aria-label="Quantity">
+                    <div class="input-group-append" id="product-id" data-id="{{ product.id }}">
+                        <button class="btn btn-primary set-inventory-for-product" id="set-inventory-for-product" type="button">Set inventory</button>
+                        <button class="btn btn-outline-secondary random-inventory-for-product" id="random-inventory-for-product" type="button">Random inventory</button>
                     </div>
                 </div>
             </div>
@@ -55,7 +72,7 @@
                             <td>
                                 <ul>
                                 {% for source in child.inventory %}
-                                   <li>{{ source.source_id }}: {{ source.qty }}</li>
+                                   <li class="{% if source.qty == 0 %}text-danger{% elseif source.qty < 10 %}text-warning{% else %}text-success{% endif %}">{{ source.source_id }}: {{ source.qty }}</li>
                                 {% endfor %}
                                 </ul>
                             </td>

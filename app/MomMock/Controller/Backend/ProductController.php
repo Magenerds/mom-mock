@@ -36,11 +36,14 @@ class ProductController extends AbstractBackendController
      */
     public function indexAction(Request $request, Response $response)
     {
+        $subSelect = $this->getDb()->createQueryBuilder()
+            ->select('`child_sku`')
+            ->from('`' . Product::TABLE_CHILD_NAME . '`', 'c');
+
         $products = $this->getDb()->createQueryBuilder()
             ->select('`sku`, `id`, `type`, `name`')
             ->from('`' . Product::TABLE_NAME . '`', 'p')
-            ->rightJoin('p', Product::TABLE_CHILD_NAME, 'c', 'p.id = c.product_id')
-            ->groupBy('`id`')
+            ->where($this->getDb()->createQueryBuilder()->expr()->notIn('p.sku', $subSelect->getSQL()))
             ->setMaxResults(20)
             ->execute()
             ->fetchAll();
@@ -90,8 +93,34 @@ class ProductController extends AbstractBackendController
             ->execute()
             ->fetchAll();
 
-        foreach ($children as &$child) {
-            $sku = $child['sku'];
+        // handle inventory dependent on existing child products
+        if (count($children) == 0) {
+            $product = $this->getInventoryForProducts([$product]);
+            $product = array_shift($product);
+        } else {
+            $children = $this->getInventoryForProducts($children);
+        }
+
+        $templ = $this->getTemplateEngine();
+
+        $response->write($templ->render(
+            'product/detail.twig',
+            ['product' => $product, 'children' => $children]
+        ));
+
+        return $response;
+    }
+
+    /**
+     * Gets the inventory for given products
+     *
+     * @param $products
+     * @return mixed
+     */
+    private function getInventoryForProducts($products)
+    {
+        foreach ($products as &$product) {
+            $sku = $product['sku'];
 
             $inventory = $this->getDb()->createQueryBuilder()
                 ->select('`i`.`qty`')
@@ -104,16 +133,9 @@ class ProductController extends AbstractBackendController
                 ->execute()
                 ->fetchAll();
 
-            $child['inventory'] = $inventory;
+            $product['inventory'] = $inventory;
         }
 
-        $templ = $this->getTemplateEngine();
-
-        $response->write($templ->render(
-            'product/detail.twig',
-            ['product' => $product, 'children' => $children]
-        ));
-
-        return $response;
+        return $products;
     }
 }
