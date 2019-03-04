@@ -33,6 +33,7 @@ CREATE TABLE `order_item` (
 	gross_amount VARCHAR(30),
 	taxes_amount VARCHAR(30),
 	taxes_rate VARCHAR(30),
+	source_id VARCHAR(255),
 	FOREIGN KEY (order_id) REFERENCES `order`(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE

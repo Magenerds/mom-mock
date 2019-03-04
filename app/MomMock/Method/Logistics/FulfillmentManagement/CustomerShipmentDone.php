@@ -17,6 +17,7 @@ use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use MomMock\Entity\Order\Item;
 use MomMock\Entity\Order;
 use MomMock\Method\Sales\OrderManagement\Updated;
+use Doctrine\DBAL\Connection;
 
 /**
  * Class CustomerShipmentDone
@@ -30,6 +31,10 @@ class CustomerShipmentDone extends AbstractOutgoingMethod
      */
     public function send($data)
     {
+        if (empty($data['source_id']) || $data['source_id'] == 'select-source') {
+            throw new \Exception('Please provide a source id');
+        }
+
         $orderId = $data['order_id'];
         $orderItemIds = explode(',', $data['order_item_ids']);
 
@@ -60,6 +65,9 @@ class CustomerShipmentDone extends AbstractOutgoingMethod
         // insert order data to shipment template
         $method = $this->methodResolver->getMethodForServiceClass(get_class($this));
         $template = $this->templateHelper->getTemplateForMethod($method);
+
+        // insert source id
+        $template = str_replace('{{source_id}}', $data['source_id'], $template);
 
         // insert order data
         foreach ($order as $key => $value) {
@@ -96,6 +104,7 @@ class CustomerShipmentDone extends AbstractOutgoingMethod
         $result = $this->rpcClient->send($shipmentData, $method);
 
         $this->setShippedStatus($orderItemIds);
+        $this->setSourceId($data['source_id'], $orderItemIds, $orderId);
         $this->checkForCompleteStatus($orderId);
 
         return $result;
@@ -160,5 +169,23 @@ class CustomerShipmentDone extends AbstractOutgoingMethod
         );
 
         $updated->send(['order_id' => $orderId]);
+    }
+
+    /**
+     * Sets source id for order items
+     *
+     * @param $sourceId
+     * @param $orderItemIds
+     */
+    protected function setSourceId($sourceId, $orderItemIds, $orderId)
+    {
+        $this->db->createQueryBuilder()
+            ->update(sprintf("`%s`", Item::TABLE_NAME))
+            ->set('`source_id`', "'{$sourceId}'")
+            ->where('id IN (:order_item_ids)')
+            ->orWhere("id = 'SHIPPING' AND order_id = (:order_id)")
+            ->setParameter('order_item_ids', $orderItemIds, Connection::PARAM_INT_ARRAY)
+            ->setParameter('order_id', $orderId)
+            ->execute();
     }
 }

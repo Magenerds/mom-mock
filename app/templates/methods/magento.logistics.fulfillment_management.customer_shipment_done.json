@@ -72,7 +72,7 @@
       }
     ],
     "shipment_id": "",
-    "source_id": "XXX",
+    "source_id": "{{source_id}}",
     "store_id": "{{order.store}}"
   }
 }

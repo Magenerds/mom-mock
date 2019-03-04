@@ -34,7 +34,7 @@ class ShipmentController extends AbstractBackendController
     {
         $params = $request->getQueryParams();
 
-        if (empty($params['order_id']) || empty($params['order_item_ids'])) {
+        if (empty($params['order_id']) || empty($params['order_item_ids']) || empty($params['source_id'])) {
             return $response->withStatus(404, 'No shipment data was given');
         }
 

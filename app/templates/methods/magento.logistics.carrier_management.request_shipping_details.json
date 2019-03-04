@@ -2,7 +2,7 @@
     "shipment": {
         "store_id": "{{order.store}}",
         "order_id": "{{order.increment_id}}",
-        "source_id": "4025018900179",
+        "source_id": "{{source_id}}",
         "method": "dhl",
         "items": [
             {

@@ -97,9 +97,21 @@ var buttonHandler = {
         e.preventDefault();
         var orderId = e.currentTarget.parentNode.getAttribute('data-id'),
             orderItemIds = buttonHandler._getSelectedItemsIds();
-        
+
+        if (0 === orderItemIds.length) {
+            alert('Please select the line item(s) to request the shipment for');
+            return;
+        }
+
+        var select = document.getElementById('source-select');
+        var sourceId = select.options[select.selectedIndex].value;
+        if (sourceId === 'select-source') {
+            alert('Please select a source');
+            return;
+        }
+
         buttonHandler._ajaxRequest(
-            '/shipment/create?order_id=' + orderId + '&order_item_ids=' + orderItemIds.join(','),
+            '/shipment/create?order_id=' + orderId + '&source_id=' + sourceId + '&order_item_ids=' + orderItemIds.join(','),
             '_shipmentResultHandler'
         );
 
@@ -121,8 +133,15 @@ var buttonHandler = {
             return;
         }
 
+        var select = document.getElementById('source-select');
+        var sourceId = select.options[select.selectedIndex].value;
+        if (sourceId === 'select-source') {
+            alert('Please select a source');
+            return;
+        }
+
         buttonHandler._ajaxRequest(
-            '/shipment/labels?order_id=' + orderId + '&order_item_ids=' + orderItemIds.join(','),
+            '/shipment/labels?order_id=' + orderId + '&source_id=' + sourceId + '&order_item_ids=' + orderItemIds.join(','),
             '_genericResultHandler'
         );
 

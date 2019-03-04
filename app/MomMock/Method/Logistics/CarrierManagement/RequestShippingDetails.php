@@ -126,9 +126,12 @@ class RequestShippingDetails extends AbstractOutgoingMethod
      * @param array[] $orderItems
      * @return mixed[]
      */
-    private function buildRequestShipmentLabelPayload(string $method, array $order, array $orderItems): array
+    private function buildRequestShipmentLabelPayload(string $method, array $order, array $orderItems, $sourceId): array
     {
         $template = $this->templateHelper->getTemplateForMethod($method);
+
+        // insert source id
+        $template = str_replace('{{source_id}}', $sourceId, $template);
 
         // insert order data
         $template = $this->insertEntityIntoTemplateString('order', $template, $order);
@@ -155,7 +158,7 @@ class RequestShippingDetails extends AbstractOutgoingMethod
         $orderItems = $this->loadOrderItems(...$orderItemIds);
 
         $method = $this->methodResolver->getMethodForServiceClass(get_class($this));
-        $payload = $this->buildRequestShipmentLabelPayload($method, $order, $orderItems);
+        $payload = $this->buildRequestShipmentLabelPayload($method, $order, $orderItems, $data['source_id']);
 
         $result = (string) $this->rpcClient->send($payload, $method);
 

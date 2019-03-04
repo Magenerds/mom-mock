@@ -43,19 +43,19 @@ to register your MDC instance to the MOM mock and to request your first
 OAuth token.
 
 ## Supported Messages 
-| Message | Endpoint | Description | Implemented |
+| Message | Endpoint | Description |
 |----|----|----|----|
-| magento.service_bus.remote.register | oms | Register integration | ✓ |
-| magento.service_bus.remote.unregister | oms | Unregister integration | ✓ |
-| magento.sales.order_management.create | oms | Create an order in MOM  | ✓ |
-| magento.logistics.fulfillment_management.customer_shipment_done | mdc | Complete Shipment  | ✓ |
-| magento.sales.order_management.updated | mdc | Update Order Status in MDC | ✓ |
-| magento.logistics.carrier_management.request_shipping_details | mdc | Request Shipping label from MDC  | ✓ |
-| magento.postsales.return_management.authorize | oms | Request a RMA | ✓ |
-| magento.catalog.product_management.updated | oms | Export Product to MOM | ✓ |
-| magento.postsales.return_management.updated | mdc | Update RMA status | ✓ |
-| magento.postsales.refund_management.updated | mdc | Creates a creditmemo | ✓ |
-| magento.inventory.aggregate_stock_management.updated | mdc | Stock update from MOM | ✓ |
+| magento.service_bus.remote.register | oms | Register integration |
+| magento.service_bus.remote.unregister | oms | Unregister integration |
+| magento.sales.order_management.create | oms | Create an order in MOM |
+| magento.logistics.fulfillment_management.customer_shipment_done | mdc | Complete Shipment |
+| magento.sales.order_management.updated | mdc | Update Order Status in MDC |
+| magento.logistics.carrier_management.request_shipping_details | mdc | Request Shipping label from MDC |
+| magento.postsales.return_management.authorize | oms | Request a RMA |
+| magento.catalog.product_management.updated | oms | Export Product to MOM |
+| magento.postsales.return_management.updated | mdc | Update RMA status |
+| magento.postsales.refund_management.updated | mdc | Creates a creditmemo |
+| magento.inventory.aggregate_stock_management.updated | mdc | Stock update from MOM |
 
 ## Features
 - Order overview and detail page

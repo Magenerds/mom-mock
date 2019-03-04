@@ -17,6 +17,7 @@ use MomMock\Entity\Package;
 use MomMock\Entity\Rma;
 use MomMock\Entity\Order;
 use MomMock\Entity\Rma\Item as RmaItem;
+use MomMock\Entity\Source;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -86,6 +87,7 @@ class OrderController extends AbstractBackendController
             [
                 'order' => $this->getOrderDetails($id),
                 'returns' => $this->getReturnDetails($id),
+                'sources' => $this->getSources()
             ]
         ));
 
@@ -169,6 +171,20 @@ class OrderController extends AbstractBackendController
         }
 
         return $result;
+    }
+
+    /**
+     * Returns all available sources
+     *
+     * @return array
+     */
+    private function getSources()
+    {
+        return $this->getDb()->createQueryBuilder()
+            ->select('*')
+            ->from('`' . Source::TABLE_NAME . '`')
+            ->execute()
+            ->fetchAll();
     }
 
     /**

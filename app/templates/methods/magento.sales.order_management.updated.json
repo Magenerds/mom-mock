@@ -84,8 +84,8 @@
         },
         "shipping_address_reference": "",
         "sku": "{{order_item.sku}}",
-        "source_id": "",
-        "source_location": "",
+        "source_id": "{{order_item.source_id}}",
+        "source_location": "{{order_item.source_id}}",
         "status": "{{order_item.status}}",
         "status_date": "{{order.origin_date}}",
         "status_reason": "{{order_item.status}}"
