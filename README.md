@@ -44,7 +44,7 @@ OAuth token.
 
 ## Supported Messages 
 | Message | Endpoint | Description |
-|----|----|----|----|
+|----|----|----|
 | magento.service_bus.remote.register | oms | Register integration |
 | magento.service_bus.remote.unregister | oms | Unregister integration |
 | magento.sales.order_management.create | oms | Create an order in MOM |
