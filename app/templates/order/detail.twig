@@ -64,6 +64,7 @@
                         <th scope="col">Product type</th>
                         <th scope="col">Sku</th>
                         <th scope="col">Product name</th>
+                        <th scope="col">Custom attributes</th>
                         <th scope="col">Status</th>
                     </tr>
                     </thead>
@@ -85,6 +86,7 @@
                             <td>{{ item.product_type }}</td>
                             <td>{{ item.sku }}</td>
                             <td>{{ item.product_name }}</td>
+                            <td>{{ item.custom_attributes }}</td>
                             <td>
                                 {% if item.id != 'SHIPPING' %}
                                     {% if item.status == 'new' %}

@@ -62,6 +62,13 @@ class Item extends AbstractEntity
      */
     public function save()
     {
+        $customAttributes = '';
+        if (array_key_exists('custom_attributes', $this->data)) {
+            $customAttributes = $this->data['custom_attributes'][0]['attribute_code']
+                . ': '
+                . $this->data['custom_attributes'][0]['value'];
+        }
+
         $this->db->createQueryBuilder()
             ->insert(sprintf("`%s`", self::TABLE_NAME))
             ->values([
@@ -72,6 +79,7 @@ class Item extends AbstractEntity
                 '`sku`' => "'{$this->data['sku']}'",
                 '`product_name`' => "'{$this->data['product_name']}'",
                 '`image_url`' => "'{$this->data['image_url']}'",
+                '`custom_attributes`' => "'{$customAttributes}'",
                 '`status`' => "'{$this->data['status']}'",
                 '`net_amount`' => "'{$this->data['amount']['net_amount']}'",
                 '`gross_amount`' => "'{$this->data['amount']['gross_amount']}'",

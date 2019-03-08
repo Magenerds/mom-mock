@@ -28,6 +28,7 @@ CREATE TABLE `order_item` (
 	sku VARCHAR(30),
 	product_name VARCHAR(50),
 	image_url VARCHAR(100),
+	custom_attributes VARCHAR(250),
 	status VARCHAR(30),
 	net_amount VARCHAR(30),
 	gross_amount VARCHAR(30),
