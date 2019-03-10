@@ -56,6 +56,7 @@ OAuth token.
 | magento.postsales.return_management.updated | mdc | Update RMA status |
 | magento.postsales.refund_management.updated | mdc | Creates a creditmemo |
 | magento.inventory.aggregate_stock_management.updated | mdc | Stock update from MOM |
+| magento.logistics.warehouse_management.request_shipment| mdc | Request shipment from warehouse |
 
 ## Features
 - Order overview and detail page
@@ -67,3 +68,4 @@ OAuth token.
 - Send a stock snapshot
 - Stock aggregate and source management
 - Product and inventory overview
+- Request shipments from a source or warehouse

@@ -20,6 +20,7 @@ var buttonHandler = {
         'return-cancel': 'returnCancel',
         'shipment-btn': 'shipment',
         'shipment-details-btn': 'requestShipmentLabel',
+        'shipment-request-btn': 'requestShipment',
         'set-inventory': 'setInventory',
         'random-inventory': 'setRandomInventory',
         'set-inventory-for-product': 'setInventoryForProduct',
@@ -142,6 +143,37 @@ var buttonHandler = {
 
         buttonHandler._ajaxRequest(
             '/shipment/labels?order_id=' + orderId + '&source_id=' + sourceId + '&order_item_ids=' + orderItemIds.join(','),
+            '_genericResultHandler'
+        );
+
+    },
+
+    /**
+     * Send Ajax request that will trigger a request shipment message
+     *
+     * @param e
+     * @private
+     */
+    requestShipment: function(e) {
+        console.log('test');
+        e.preventDefault();
+        const orderId = e.currentTarget.parentNode.getAttribute('data-id');
+        const orderItemIds = buttonHandler._getSelectedItemsIds();
+
+        if (0 === orderItemIds.length) {
+            alert('Please select the line item(s) to request shipping label(s) for');
+            return;
+        }
+
+        var select = document.getElementById('source-select');
+        var sourceId = select.options[select.selectedIndex].value;
+        if (sourceId === 'select-source') {
+            alert('Please select a source');
+            return;
+        }
+
+        buttonHandler._ajaxRequest(
+            '/shipment/request?order_id=' + orderId + '&source_id=' + sourceId + '&order_item_ids=' + orderItemIds.join(','),
             '_genericResultHandler'
         );
 
