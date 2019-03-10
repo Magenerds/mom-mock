@@ -79,36 +79,41 @@ class MomController
     {
         $data = json_decode($request->getBody(), true);
 
-        if(!$data) {
+        if (!$data) {
             $data = $request->getParsedBody();
         }
 
         if (!array_key_exists('method', $data)
-            || !in_array($data['method'], $this->methodResolver->getValidMethods()))
-        {
+            || !in_array($data['method'], $this->methodResolver->getValidMethods())) {
             return $response->withJson(
                 json_encode(['error_message' => 'No valid method provided']),
                 404
             );
         }
 
-        $this->apiJournal->logRequest(
-            $data,
-            JournalRequest::STATUS_SUCCESS,
-            JournalRequest::DIRECTION_INCOMING,
-            JournalRequest::OMS_TARGET
-        );
+        $exceptionMessage = null;
+        try {
+            $responseData = $this->methodResolver
+                ->getServiceClassForMethod($data['method'])
+                ->setDb($this->db)
+                ->setMethodResolver($this->methodResolver)
+                ->setTemplateHelper($this->templateHelper)
+                ->setRestClient($this->restClient)
+                ->handleRequestData($data);
 
-        $responseData = $this->methodResolver
-            ->getServiceClassForMethod($data['method'])
-            ->setDb($this->db)
-            ->setMethodResolver($this->methodResolver)
-            ->setTemplateHelper($this->templateHelper)
-            ->setRestClient($this->restClient)
-            ->handleRequestData($data);
+            return $response->withJson($responseData);
+        } catch (\Exception $e) {
+            $exceptionMessage = $e->getMessage();
+        } finally {
+            $status = $exceptionMessage === null ? JournalRequest::STATUS_SUCCESS : JournalRequest::STATUS_ERROR;
 
-        return $response->withJson($responseData);
+            $this->apiJournal->logRequest(
+                $data,
+                $status,
+                JournalRequest::DIRECTION_INCOMING,
+                JournalRequest::OMS_TARGET,
+                $exceptionMessage
+            );
+        }
     }
-
-
 }

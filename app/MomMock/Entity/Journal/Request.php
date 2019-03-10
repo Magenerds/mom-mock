@@ -66,7 +66,7 @@ class Request extends AbstractEntity
     /**
      * @param $data
      */
-    public function logRequest($data, $status, $direction, $to)
+    public function logRequest($data, $status, $direction, $to, $resultMessage)
     {
         $this->setData([
             'delivery_id' => $data['id'],
@@ -75,7 +75,8 @@ class Request extends AbstractEntity
             'body' => json_encode($data['params']),
             'sent_at'=> date('Y-m-d H:i:s'),
             'direction' => $direction,
-            'to' => $to
+            'to' => $to,
+            'result' => $resultMessage
         ]);
         $this->save();
     }
@@ -91,7 +92,7 @@ class Request extends AbstractEntity
 
         $queryBuilder->insert(self::TABLE_NAME);
 
-        foreach (['id', 'delivery_id', 'status', 'topic', 'body', 'sent_at', 'retried_at', 'tries', 'direction', 'to', 'protocol'] as $field) {
+        foreach (['id', 'delivery_id', 'status', 'topic', 'body', 'sent_at', 'retried_at', 'tries', 'direction', 'to', 'protocol', 'result'] as $field) {
             $value = isset($this->data[$field]) ? $this->data[$field] : null;
             $queryBuilder->setValue("`$field`", $queryBuilder->expr()->literal($value));
         }

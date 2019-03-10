@@ -84,14 +84,20 @@ class RpcClient
 
         $result = null;
 
+        $exceptionMessage = null;
         try {
             $result = $this->sendRequest(json_encode($data, true), $hash, $url);
+        } catch (\Exception $e) {
+            $exceptionMessage = $e->getMessage();
         } finally {
+            $status = $exceptionMessage === null ? JournalRequest::STATUS_SUCCESS : JournalRequest::STATUS_ERROR;
+
             $this->apiJournal->logRequest(
                 $data,
-                $result === null ? JournalRequest::STATUS_ERROR : JournalRequest::STATUS_SUCCESS,
+                $status,
                 JournalRequest::DIRECTION_OUTGOING,
-                $integration['id']
+                $integration['id'],
+                $exceptionMessage
             );
         }
 

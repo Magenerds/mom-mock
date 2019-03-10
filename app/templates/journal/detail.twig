@@ -37,7 +37,8 @@
                         {% if journal.status == 'ERROR' %}
                             <span class="badge badge-danger">
                         {% endif %}
-                        {{ journal.status }}</span>
+                        {{ journal.status }}</span><br>
+                        <span class="font-weight-bold">Result: </span><pre>{{ journal.result }}</pre>
                     </div>
                 </div>
             </div>

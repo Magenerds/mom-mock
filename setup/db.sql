@@ -149,6 +149,7 @@ CREATE TABLE `journal` (
   `status` varchar(32) DEFAULT NULL COMMENT 'Status',
   `topic` varchar(255) DEFAULT NULL COMMENT 'Topic of the message',
   `body` longtext COMMENT 'Body of the message',
+  `result` longtext COMMENT 'Result',
   `sent_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Sent At',
   `retried_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Retried At',
   `tries` int(10) unsigned DEFAULT NULL COMMENT 'Number of tries',

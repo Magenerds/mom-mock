@@ -72,18 +72,26 @@ class EventsController
             );
         }
 
-        $this->apiJournal->logRequest(
-            $data,
-            JournalRequest::STATUS_SUCCESS,
-            JournalRequest::DIRECTION_INCOMING,
-            JournalRequest::OMS_TARGET
-        );
+        $exceptionMessage = null;
+        try {
+            $responseData = $this->methodResolver
+                ->getServiceClassForMethod($data['method'])
+                ->setDb($this->db)
+                ->handleRequestData($data);
 
-        $responseData = $this->methodResolver
-            ->getServiceClassForMethod($data['method'])
-            ->setDb($this->db)
-            ->handleRequestData($data);
+            return $response->withJson($responseData);
+        } catch (\Exception $e) {
+            $exceptionMessage = $e->getMessage();
+        } finally {
+            $status = $exceptionMessage === null ? JournalRequest::STATUS_SUCCESS : JournalRequest::STATUS_ERROR;
 
-        return $response->withJson($responseData);
+            $this->apiJournal->logRequest(
+                $data,
+                $status,
+                JournalRequest::DIRECTION_INCOMING,
+                JournalRequest::OMS_TARGET,
+                $exceptionMessage
+            );
+        }
     }
 }
