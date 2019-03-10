@@ -1,89 +1,87 @@
 {
-  "shipment_request": {
-    "request_id": "{{request_id}}",
-    "sales_channel": "{{order.store}}",
-    "order_id": "{{order.increment_id}}",
-    "source_id": "{{source_id}}",
-    "shipping_address": {
-      "reference": "",
-      "address_type": "{{order.address_type}}",
-      "first_name": "{{order.first_name}}",
-      "last_name": "{{order.last_name}}",
-      "address1": "{{order.address1}}",
-      "city": "{{order.city}}",
-      "zip": "{{order.zip}}",
-      "country_code": "{{order.country_code}}",
-      "email": "{{order.email}}",
-      "latitude": "",
-      "longitude": ""
-    },
-    "billing_address": {
-      "reference": "",
-      "address_type": "{{order.address_type}}",
-      "first_name": "{{order.first_name}}",
-      "last_name": "{{order.last_name}}",
-      "address1": "{{order.address1}}",
-      "city": "{{order.city}}",
-      "zip": "{{order.zip}}",
-      "country_code": "{{order.country_code}}",
-      "email": "{{order.email}}",
-      "latitude": "",
-      "longitude": ""
-    },
-    "custom_details": [
-      {
-        "name": "",
-        "value": ""
-      }
-    ],
-    "items": [
-      {
-        "order_line_id": "{{order_item.id}}",
-        "order_line_number": "{{order_item.line_number}}",
-        "item_type": "",
-        "sku": "{{order_item.sku}}",
-        "name": "{{order_item.product_name}}",
-        "custom_details": [
+  "request_id": "{{request_id}}",
+  "sales_channel": "{{order.store}}",
+  "order_id": "{{order.increment_id}}",
+  "source_id": "{{source_id}}",
+  "shipping_address": {
+    "reference": "",
+    "address_type": "{{order.address_type}}",
+    "first_name": "{{order.first_name}}",
+    "last_name": "{{order.last_name}}",
+    "address1": "{{order.address1}}",
+    "city": "{{order.city}}",
+    "zip": "{{order.zip}}",
+    "country_code": "{{order.country_code}}",
+    "email": "{{order.email}}",
+    "latitude": "",
+    "longitude": ""
+  },
+  "billing_address": {
+    "reference": "",
+    "address_type": "{{order.address_type}}",
+    "first_name": "{{order.first_name}}",
+    "last_name": "{{order.last_name}}",
+    "address1": "{{order.address1}}",
+    "city": "{{order.city}}",
+    "zip": "{{order.zip}}",
+    "country_code": "{{order.country_code}}",
+    "email": "{{order.email}}",
+    "latitude": "",
+    "longitude": ""
+  },
+  "custom_details": [
+    {
+      "name": "",
+      "value": ""
+    }
+  ],
+  "items": [
+    {
+      "order_line_id": "{{order_item.id}}",
+      "order_line_number": "{{order_item.line_number}}",
+      "item_type": "",
+      "sku": "{{order_item.sku}}",
+      "name": "{{order_item.product_name}}",
+      "custom_details": [
+        {
+          "name": "",
+          "value": ""
+        }
+      ],
+      "image_url": "",
+      "product_url": "",
+      "order_line_price": {
+        "net_amount": "{{order_item.net_amount}}",
+        "gross_amount": "{{order_item.gross_amount}}",
+        "tax_amount": "{{order_item.taxes_amount}}",
+        "tax_rate": "{{order_item.taxes_rate}}",
+        "taxes": [
           {
-            "name": "",
-            "value": ""
+            "type": "NO TAX",
+            "amount": "{{order_item.taxes_amount}}",
+            "rate": "{{order_item.taxes_rate}}"
           }
         ],
-        "image_url": "",
-        "product_url": "",
-        "order_line_price": {
-          "net_amount": "{{order_item.net_amount}}",
-          "gross_amount": "{{order_item.gross_amount}}",
-          "tax_amount": "{{order_item.taxes_amount}}",
-          "tax_rate": "{{order_item.taxes_rate}}",
-          "taxes": [
-            {
-              "type": "NO TAX",
-              "amount": "{{order_item.taxes_amount}}",
-              "rate": "{{order_item.taxes_rate}}"
-            }
-          ],
-          "currency": "EUR"
-        },
-        "status": "NEW",
-        "status_reason": "ITEM_PENDING_PICKING"
-      }
-    ],
-    "aggregated_items": [
-      {
-        "aggregated_line_id": "{{order_item.id}}",
-        "sku": "{{order_item.sku}}",
-        "quantity": 1,
-        "order_lines": [
-          "{{order_item.id}}"
-        ]
-      }
-    ],
-    "created": "",
-    "customer_id": "",
-    "customer_reference": "",
-    "language": "",
-    "vat_country": "",
-    "request_created_at": ""
-  }
+        "currency": "EUR"
+      },
+      "status": "NEW",
+      "status_reason": "ITEM_PENDING_PICKING"
+    }
+  ],
+  "aggregated_items": [
+    {
+      "aggregated_line_id": "{{order_item.id}}",
+      "sku": "{{order_item.sku}}",
+      "quantity": 1,
+      "order_lines": [
+        "{{order_item.id}}"
+      ]
+    }
+  ],
+  "created": "",
+  "customer_id": "",
+  "customer_reference": "",
+  "language": "",
+  "vat_country": "",
+  "request_created_at": ""
 }

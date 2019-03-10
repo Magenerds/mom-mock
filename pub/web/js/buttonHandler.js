@@ -161,7 +161,7 @@ var buttonHandler = {
         const orderItemIds = buttonHandler._getSelectedItemsIds();
 
         if (0 === orderItemIds.length) {
-            alert('Please select the line item(s) to request shipping label(s) for');
+            alert('Please select the line item(s) to request shipment for');
             return;
         }
 

@@ -84,8 +84,8 @@ class RequestShipment extends AbstractOutgoingMethod
         $aggregatedItems = [];
 
         foreach ($orderItems as $orderItem) {
-            $itemTemplate = json_encode($requestShipmentData['shipment_request']['items'], true);
-            $aggregatedItemTemplate = json_encode($requestShipmentData['shipment_request']['aggregated_items'], true);
+            $itemTemplate = json_encode($requestShipmentData['items'], true);
+            $aggregatedItemTemplate = json_encode($requestShipmentData['aggregated_items'], true);
 
             foreach ($orderItem as $key => $value) {
                 $itemTemplate = str_replace(sprintf('{{order_item.%s}}', $key), $value, $itemTemplate);
@@ -96,8 +96,8 @@ class RequestShipment extends AbstractOutgoingMethod
             $aggregatedItems = array_merge($aggregatedItems, json_decode($aggregatedItemTemplate, true));
         }
 
-        $requestShipmentData['shipment_request']['items'] = $items;
-        $requestShipmentData['shipment_request']['aggregated_items'] = $aggregatedItems;
+        $requestShipmentData['items'] = $items;
+        $requestShipmentData['aggregated_items'] = $aggregatedItems;
 
         $result = $this->rpcClient->send($requestShipmentData, $method);
 
