@@ -34,7 +34,8 @@ class MethodResolver
         'magento.service_bus.remote.unregister',
         'magento.sales.order_management.create',
         'magento.catalog.product_management.updated',
-        'magento.postsales.return_management.authorize'
+        'magento.postsales.return_management.authorize',
+        'magento.logistics.warehouse_management.lines_shipped'
     ];
 
     /**
