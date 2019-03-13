@@ -92,7 +92,7 @@ class Request extends AbstractEntity
 
         $queryBuilder->insert(self::TABLE_NAME);
 
-        foreach (['id', 'delivery_id', 'status', 'topic', 'body', 'sent_at', 'retried_at', 'tries', 'direction', 'to', 'protocol', 'result'] as $field) {
+        foreach (['delivery_id', 'status', 'topic', 'body', 'sent_at', 'direction', 'to', 'result'] as $field) {
             $value = isset($this->data[$field]) ? $this->data[$field] : null;
             $queryBuilder->setValue("`$field`", $queryBuilder->expr()->literal($value));
         }
