@@ -16,7 +16,7 @@ Run the following commands to set up the mock with Valet +:
 ```bash
 composer install
 cd pub
-valet link mom --secure
+valet link mom
 cd ..
 valet db create mom
 valet db import setup/db.sql mom
@@ -28,8 +28,8 @@ credentials:
 ```php
 'serviceBus' => 
   array (
-    'url' => 'https://mom.test/',
-    'oauth_server_url' => 'https://mom.test/',
+    'url' => 'http://mom.test/',
+    'oauth_server_url' => 'http://mom.test/',
     'oauth_client_id' => 'mom',
     'oauth_client_secret' => 'mom',
     'application_id' => 'mdc',
