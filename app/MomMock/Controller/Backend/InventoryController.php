@@ -34,6 +34,7 @@ class InventoryController extends AbstractBackendController
     public function addInventoryAction(Request $request, Response $response)
     {
         $params = $request->getQueryParams();
+        $productId = null;
 
         if (empty($params['qty'])) {
             return $response->withStatus(400, 'Please specify quantity');
@@ -68,11 +69,7 @@ class InventoryController extends AbstractBackendController
 
         $inventory = new Inventory($this->getDb());
 
-        if (!$productId) {
-            $products = null;
-        }
         $inventory->delete($products);
-
         $inventory->setData($inventoryData)->save();
     }
 
