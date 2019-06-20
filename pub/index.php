@@ -84,6 +84,7 @@ $app->get('/product', ProductController::class . ':indexAction');
 $app->get('/product/{id}', ProductController::class . ':detailAction');
 $app->get('/snapshot/aggregate', StocksnapshotController::class . ':sendSnapshotForAggregateAction');
 $app->post('/', MomController::class . ':indexAction');
+$app->post('/remote/oms', MomController::class . ':indexAction');
 $app->post('/delegate/oms', MomController::class . ':indexAction');
 $app->post('/events', EventsController::class . ':indexAction');
 $app->post('/oauth/token', TokenController::class . ':indexAction');

@@ -57,6 +57,7 @@ OAuth token.
 | magento.postsales.refund_management.updated | mdc | Creates a creditmemo |
 | magento.inventory.aggregate_stock_management.updated | mdc | Stock update from MOM |
 | magento.logistics.warehouse_management.request_shipment| mdc | Request shipment from warehouse |
+| magento.inventory.source_repository.search| oms | Request source information |
 
 ## Features
 - Order overview and detail page

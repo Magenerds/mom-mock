@@ -1,0 +1,41 @@
+{
+  "items": [
+    {
+      "address": {
+        "address1": "Street 1",
+        "address2": "Street 2",
+        "address_type": "source",
+        "city": "City",
+        "country_code": "DE",
+        "custom_attributes": [],
+        "email": "source@email.com",
+        "first_name": "Firstname",
+        "last_name": "lastname",
+        "latitude": "",
+        "longitude": "",
+        "phone": "0123456789",
+        "state": "Sate",
+        "zip": "12345"
+      },
+      "aggregate_ids": [
+        "{{aggregate_id}}"
+      ],
+      "configurations": {
+        "capabilities": {
+          "fulfillment": {
+            "can_ship_to_source": false
+          },
+          "services": [],
+          "shipping": []
+        }
+      },
+      "id": "{{source_id}}",
+      "name": "{{source_id}}",
+      "timezone": "UTC",
+      "type": "Warehouse"
+    }
+  ],
+  "offset": 0,
+  "size": 1000,
+  "total": 74
+}

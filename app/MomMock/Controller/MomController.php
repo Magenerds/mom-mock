@@ -101,7 +101,10 @@ class MomController
                 ->setRestClient($this->restClient)
                 ->handleRequestData($data);
 
-            return $response->withJson($responseData);
+            $responseStub = $this->getMethodStub();
+            $responseStub['result'] = $responseData;
+
+            return $response->withJson($responseStub);
         } catch (\Exception $e) {
             $exceptionMessage = $e->getMessage();
         } finally {
@@ -115,5 +118,19 @@ class MomController
                 $exceptionMessage
             );
         }
+    }
+
+    /**
+     * Returns the response stub
+     *
+     * @return []
+     */
+    protected function getMethodStub()
+    {
+        return [
+            "jsonrpc" =>  "2.0",
+            "id" => 1,
+            "result" => ""
+        ];
     }
 }

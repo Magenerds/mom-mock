@@ -18,7 +18,7 @@ use MomMock\Entity\Inventory;
 
 /**
  * Class Updated
- * @package MomMock\Method\Logistics\FulfillmentManagement
+ * @package MomMock\Method\Inventory\AggregateStockManagement
  * @author  Florian Sydekum <f.sydekum@techdivision.com>
  */
 class Updated extends AbstractOutgoingMethod
