@@ -51,8 +51,10 @@ valet db import setup/db.sql mom
 
 ## Connect M2 with MOM-MOCK
 
-1. Open `app/etc/env.php` in your MDC instance and edit the following
-credentials:
+1. Install MCOM connector
+
+2. Open `app/etc/env.php` in your MDC instance and edit the following
+credentials (Taking into account your DB settings from before):
 
     ```php
     'serviceBus' => 
@@ -67,7 +69,7 @@ credentials:
       )
     ```
 
-2. Run `bin/magento setup:upgrade --keep-generated` in your MDC instance
+3. Run `bin/magento setup:upgrade --keep-generated` in your MDC instance
 to register your MDC instance to the MOM mock and to request your first
 OAuth token.
 
