@@ -22,23 +22,54 @@ valet db create mom
 valet db import setup/db.sql mom
 ```
 
-Open `app/etc/env.php` in your MDC instance and edit the following
-credentials:
+## Setup without Valet
+1. Start with running composer:
 
-```php
-'serviceBus' => 
-  array (
-    'url' => 'http://mom.test/',
-    'oauth_server_url' => 'http://mom.test/',
-    'oauth_client_id' => 'mom',
-    'oauth_client_secret' => 'mom',
-    'application_id' => 'mdc',
-    'secret' => 'mom',
-    'secure_endpoint' => true,
-  )
-```
+    ```bash
+    composer install
+    ```
 
-Run `bin/magento setup:upgrade --keep-generated` in your MDC instance
+2. Create an empty database 
+
+3. Open `pub/web/index.php` in your MDC instance and edit the following to match the created database:
+
+    ```php
+    $container['db'] = function($c) {
+        return DriverManager::getConnection([
+            'dbname' => 'mommock',
+            'user' => 'magento',
+            'password' => 'magento',
+            'host' => 'localhost',
+            'driver' => 'pdo_mysql',
+        ]);
+    };
+    ```
+
+4. Execute the .sql script in `setup/db.sql`
+
+5. Set your webserver to serve the folder `pub`
+
+## Connect M2 with MOM-MOCK
+
+1. Install MCOM connector
+
+2. Open `app/etc/env.php` in your MDC instance and edit the following
+credentials (Taking into account your DB settings from before):
+
+    ```php
+    'serviceBus' => 
+      array (
+        'url' => 'http://mom.test/',
+        'oauth_server_url' => 'http://mom.test/',
+        'oauth_client_id' => 'mom',
+        'oauth_client_secret' => 'mom',
+        'application_id' => 'mdc',
+        'secret' => 'mom',
+        'secure_endpoint' => true,
+      )
+    ```
+
+3. Run `bin/magento setup:upgrade --keep-generated` in your MDC instance
 to register your MDC instance to the MOM mock and to request your first
 OAuth token.
 
