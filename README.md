@@ -31,7 +31,7 @@ valet db import setup/db.sql mom
 
 2. Create an empty database 
 
-3. Open `pub/web/index.php` in your MDC instance and edit the following to match the created database:
+3. Open `pub/index.php` in your mom-mock folder and edit the following to match the created database:
 
     ```php
     $container['db'] = function($c) {
